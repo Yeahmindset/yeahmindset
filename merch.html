@@ -1,0 +1,192 @@
+<head>
+  <!-- Metas, fonts, etc. que ya tengas -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Merch XTREME - $YEAH</title>
+
+  <!-- Font Awesome para iconos -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <!-- QR Code -->
+  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.4/build/qrcode.min.js"></script>
+
+  <!-- Solana web3.js -->
+  <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.min.js"></script>
+
+  <!-- Tu CSS va aquí o en archivo externo -->
+  <style>
+    /* Tu CSS completo aquí (modal, botones, carrito, etc.) */
+    #paymentModal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.85);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-content {
+      background: #111;
+      padding: 2rem;
+      border-radius: 12px;
+      max-width: 420px;
+      width: 90%;
+      color: white;
+      text-align: center;
+    }
+    .payment-btn {
+      padding: 0.8rem 1.5rem;
+      margin: 0.5rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .payment-btn.active {
+      background: #ff3366;
+      color: white;
+    }
+    .qr-container {
+      margin: 1.5rem auto;
+      background: white;
+      padding: 1rem;
+      border-radius: 12px;
+      display: inline-block;
+    }
+  </style>
+</head>
+
+<!-- Tu HTML del body sigue igual (header, hero, productos, carrito, etc.) -->
+
+<!-- Ejemplo mínimo del modal de pago (ajústalo a tu diseño) -->
+<div id="paymentModal">
+  <div class="modal-content">
+    <h2>Paga con Solana</h2>
+    <p id="totalAmount">Total: $0.00</p>
+
+    <div>
+      <button class="payment-btn active" data-currency="SOL">SOL</button>
+      <button class="payment-btn" data-currency="USDC">USDC</button>
+      <button class="payment-btn" data-currency="YEAH">$YEAH</button>
+    </div>
+
+    <div id="qrContainer" class="qr-container"></div>
+
+    <p id="paymentStatus" style="white-space: pre-line; font-size: 0.95rem; margin: 1rem 0;"></p>
+    <p style="font-size: 0.85rem; opacity: 0.7;" id="paymentLinkText"></p>
+
+    <button id="closeModal" style="margin-top: 1rem; padding: 0.8rem 2rem; background: #444; color: white; border: none; border-radius: 8px; cursor: pointer;">
+      Cerrar
+    </button>
+  </div>
+</div>
+
+<script>
+  // ──────────────────────────────────────────────
+  //           CONFIGURACIÓN OBLIGATORIA
+  // ──────────────────────────────────────────────
+  const MERCHANT_ADDRESS = 'TuDirecciónSolanaAquí111111111111111111111111111'; // ← CAMBIA ESTO YA
+  const MEMO = 'Merch XTREME - $YEAH';
+
+  // Tasas aproximadas febrero 2026 (actualiza con API real cuando puedas)
+  const rates = {
+    SOL:  195,      // 1 SOL ≈ $195
+    USDC: 1.00,
+    YEAH: 0.00042   // 1 $YEAH ≈ $0.00042 (ajusta según mercado)
+  };
+
+  // Mints mainnet
+  const MINTS = {
+    SOL:  null,
+    USDC: 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v',
+    YEAH: '7wN4sxftxgoSzNorVSW3rQmRy7EjQDeWURfTSg3Gpump'  // Pump.fun token
+  };
+
+  // ──────────────────────────────────────────────
+  //           LÓGICA DE PAGO SOLANA PAY
+  // ──────────────────────────────────────────────
+
+  // Abre modal al checkout
+  document.querySelector('.checkout-btn')?.addEventListener('click', () => {
+    if (cart.length === 0) {
+      alert("Carrito vacío, degen 😭");
+      return;
+    }
+
+    let totalUSD = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+
+    document.getElementById('totalAmount').textContent = `Total: $${totalUSD.toFixed(2)} USD`;
+    document.getElementById('paymentModal').style.display = 'flex';
+
+    generatePayment('SOL', totalUSD); // default SOL
+  });
+
+  // Cerrar modal
+  document.getElementById('closeModal')?.addEventListener('click', () => {
+    document.getElementById('paymentModal').style.display = 'none';
+    document.getElementById('qrContainer').innerHTML = '';
+    document.getElementById('paymentStatus').textContent = '';
+  });
+
+  // Cambio de moneda
+  document.querySelectorAll('.payment-btn')?.forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.payment-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const currency = btn.dataset.currency;
+      const totalUSD = parseFloat(document.getElementById('totalAmount').textContent.replace(/[^0-9.]/g, ''));
+      generatePayment(currency, totalUSD);
+    });
+  });
+
+  async function generatePayment(currency, amountUSD) {
+    const qrContainer = document.getElementById('qrContainer');
+    qrContainer.innerHTML = '';
+
+    const rate = rates[currency] || 1;
+    let amountCrypto = amountUSD / rate;
+
+    // Decimals según token
+    let decimals = currency === 'SOL' ? 9 : 6;  // USDC y YEAH suelen ser 6
+
+    amountCrypto = Number(amountCrypto.toFixed(decimals));
+
+    const mint = MINTS[currency];
+
+    // Reference único para poder trackear después (opcional pero recomendado)
+    const reference = crypto.randomUUID?.() || Date.now().toString();
+
+    // URI Solana Pay
+    let uri = `solana:${MERCHANT_ADDRESS}?`;
+    uri += `amount=${amountCrypto}`;
+    uri += `&label=Merch%20XTREME`;
+    uri += `&message=${encodeURIComponent(MEMO + ` - $${amountUSD.toFixed(2)} (${currency})`)}`;
+    if (mint) uri += `&spl-token=${mint}`;
+    uri += `&reference=${reference}`;
+
+    // Generar QR
+    try {
+      await QRCode.toCanvas(qrContainer, uri, {
+        width: 280,
+        color: { dark: '#000000', light: '#ffffff' },
+        errorCorrectionLevel: 'H'
+      });
+    } catch (err) {
+      console.error('Error QR:', err);
+      document.getElementById('paymentStatus').textContent = 'Error al generar QR 😢 Intenta otra moneda.';
+      return;
+    }
+
+    // Mostrar info al usuario
+    document.getElementById('paymentStatus').textContent = 
+      `Envía exactamente ${amountCrypto} ${currency}\n` +
+      `≈ $${amountUSD.toFixed(2)} USD\n\n` +
+      `Usa Phantom, Backpack o Solflare.\n¡No envíes menos!`;
+
+    document.getElementById('paymentLinkText').textContent = uri;
+
+    console.log(`Reference para trackear pago: ${reference}`);
+  }
+
+  // ... Aquí pones el resto de tu JavaScript (addToCart, updateCart, filtros, etc.)
+</script>
