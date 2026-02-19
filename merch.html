@@ -1,192 +1,569 @@
+<!DOCTYPE html>
+<html lang="es">
 <head>
-  <!-- Metas, fonts, etc. que ya tengas -->
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Merch XTREME - $YEAH</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>$YEAH MERCH • LFG DEGEN MODE</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Impact&family=VT323&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+    <style>
+        :root {
+            --neon-pink: #ff0099;
+            --neon-yellow: #ffff00;
+            --neon-cyan: #00ffff;
+            --bg-dark: #0a0015;
+            --card-dark: #140028;
+            --text: #f0e6ff;
+            --gray: #665588;
+            --danger: #ff3366;
+            --glow: 0 0 12px rgba(255,0,153,0.7), 0 0 24px rgba(255,0,153,0.4);
+            --glow-yellow: 0 0 12px rgba(255,255,0,0.7);
+        }
 
-  <!-- Font Awesome para iconos -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            background: var(--bg-dark);
+            color: var(--text);
+            font-family: 'VT323', monospace;
+            min-height: 100vh;
+            line-height: 1.4;
+            font-size: 1.1rem;
+        }
 
-  <!-- QR Code -->
-  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.4/build/qrcode.min.js"></script>
+        header {
+            background: linear-gradient(135deg, #0a0015, #1a0033);
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(255,0,153,0.3);
+            border-bottom: 2px solid var(--neon-pink);
+        }
 
-  <!-- Solana web3.js -->
-  <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.min.js"></script>
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--neon-yellow);
+            text-shadow: var(--glow-yellow);
+            letter-spacing: -1px;
+        }
+        .logo span { color: var(--neon-pink); }
 
-  <!-- Tu CSS va aquí o en archivo externo -->
-  <style>
-    /* Tu CSS completo aquí (modal, botones, carrito, etc.) */
-    #paymentModal {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.85);
-      z-index: 9999;
-      align-items: center;
-      justify-content: center;
-    }
-    .modal-content {
-      background: #111;
-      padding: 2rem;
-      border-radius: 12px;
-      max-width: 420px;
-      width: 90%;
-      color: white;
-      text-align: center;
-    }
-    .payment-btn {
-      padding: 0.8rem 1.5rem;
-      margin: 0.5rem;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: bold;
-    }
-    .payment-btn.active {
-      background: #ff3366;
-      color: white;
-    }
-    .qr-container {
-      margin: 1.5rem auto;
-      background: white;
-      padding: 1rem;
-      border-radius: 12px;
-      display: inline-block;
-    }
-  </style>
+        .header-right { display: flex; gap: 1.2rem; align-items: center; }
+
+        .wallet-btn {
+            background: transparent;
+            border: 2px solid var(--neon-cyan);
+            color: var(--neon-cyan);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-family: 'VT323', monospace;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .wallet-btn:hover {
+            background: var(--neon-cyan);
+            color: black;
+            box-shadow: 0 0 15px var(--neon-cyan);
+        }
+
+        .cart-btn {
+            background: none;
+            border: none;
+            color: var(--neon-yellow);
+            font-size: 1.8rem;
+            cursor: pointer;
+            position: relative;
+            transition: transform 0.2s;
+        }
+        .cart-btn:hover { transform: scale(1.15); }
+        .cart-count {
+            position: absolute;
+            top: -12px;
+            right: -12px;
+            background: var(--danger);
+            color: white;
+            font-size: 0.8rem;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            border: 2px solid var(--neon-yellow);
+            font-weight: bold;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 1.5rem auto;
+            padding: 0 1rem;
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 2rem;
+        }
+
+        aside {
+            background: var(--card-dark);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 2px solid var(--neon-pink);
+            box-shadow: var(--glow);
+            height: fit-content;
+            position: sticky;
+            top: 80px;
+        }
+
+        aside h3 {
+            color: var(--neon-yellow);
+            text-shadow: var(--glow-yellow);
+            margin-bottom: 1.2rem;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        select, input {
+            width: 100%;
+            padding: 0.8rem;
+            background: #1a0033;
+            border: 2px solid #663399;
+            border-radius: 8px;
+            color: var(--neon-yellow);
+            font-family: 'VT323', monospace;
+            font-size: 1.1rem;
+        }
+
+        .search-box { position: relative; margin-bottom: 1.5rem; }
+        .search-box i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--neon-pink);
+        }
+        .search-box input { padding-left: 2.8rem; }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.6rem;
+        }
+
+        .product-card {
+            background: var(--card-dark);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 2px solid #4d0080;
+            transition: all 0.25s ease;
+            position: relative;
+        }
+        .product-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--neon-pink);
+            box-shadow: var(--glow);
+        }
+
+        .product-img {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+            border-bottom: 3px solid var(--neon-yellow);
+        }
+
+        .product-info { padding: 1.2rem; }
+        .product-category {
+            color: #cc99ff;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        .product-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.4rem;
+            color: white;
+            margin: 0.4rem 0;
+            text-shadow: 0 0 8px rgba(255,255,255,0.5);
+        }
+        .product-price {
+            font-size: 1.6rem;
+            color: var(--neon-yellow);
+            font-weight: bold;
+            margin: 0.6rem 0 1rem;
+            text-shadow: var(--glow-yellow);
+        }
+
+        .btn-add {
+            background: var(--neon-pink);
+            color: white;
+            border: none;
+            padding: 0.9rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'VT323', monospace;
+            font-size: 1.2rem;
+            width: 100%;
+            transition: all 0.2s;
+            box-shadow: var(--glow);
+        }
+        .btn-add:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 25px rgba(255,0,153,0.9);
+        }
+
+        /* Mobile improvements */
+        @media (max-width: 950px) {
+            .container { grid-template-columns: 1fr; }
+            aside { position: static; border: none; background: transparent; padding: 0.8rem; }
+            .products-grid { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
+        }
+
+        @media (max-width: 600px) {
+            header { flex-direction: column; gap: 0.8rem; padding: 1rem 4%; }
+            .header-right { width: 100%; justify-content: center; }
+            .products-grid { grid-template-columns: 1fr; }
+            .product-img { height: 240px; }
+        }
+
+        /* Cart */
+        .cart-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(10,0,21,0.92);
+            z-index: 2000;
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .cart-overlay.active { visibility: visible; opacity: 1; }
+
+        .cart-sidebar {
+            background: var(--card-dark);
+            width: 100%;
+            max-width: 440px;
+            height: 100%;
+            margin-left: auto;
+            transform: translateX(100%);
+            transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            border-left: 4px solid var(--neon-pink);
+            box-shadow: -10px 0 30px rgba(255,0,153,0.4);
+        }
+        .cart-overlay.active .cart-sidebar { transform: translateX(0); }
+
+        .cart-header {
+            padding: 1.2rem 1.8rem;
+            border-bottom: 3px dashed var(--neon-yellow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .cart-header h2 { color: var(--neon-yellow); text-shadow: var(--glow-yellow); }
+
+        .cart-items { flex: 1; padding: 1.2rem 1.8rem; overflow-y: auto; }
+        .cart-item {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px dashed #4d0080;
+        }
+        .cart-item img { width: 80px; height: 80px; object-fit: cover; border: 2px solid var(--neon-cyan); border-radius: 8px; }
+
+        .btn-checkout {
+            background: linear-gradient(90deg, #ffff00, #ff0099);
+            color: black;
+            border: none;
+            width: 100%;
+            padding: 1.2rem;
+            border-radius: 10px;
+            font-size: 1.4rem;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: var(--glow), var(--glow-yellow);
+            margin-top: 1rem;
+        }
+        .btn-checkout:hover { transform: scale(1.04); }
+    </style>
 </head>
+<body>
 
-<!-- Tu HTML del body sigue igual (header, hero, productos, carrito, etc.) -->
-
-<!-- Ejemplo mínimo del modal de pago (ajústalo a tu diseño) -->
-<div id="paymentModal">
-  <div class="modal-content">
-    <h2>Paga con Solana</h2>
-    <p id="totalAmount">Total: $0.00</p>
-
-    <div>
-      <button class="payment-btn active" data-currency="SOL">SOL</button>
-      <button class="payment-btn" data-currency="USDC">USDC</button>
-      <button class="payment-btn" data-currency="YEAH">$YEAH</button>
+<header>
+    <div class="logo">$YEAH <span>DEGEN DRIP</span></div>
+    <div class="header-right">
+        <button class="wallet-btn" onclick="alert('Phantom / Solflare connect coming soon... NGMI if you sleep')">Connect Wallet</button>
+        <button class="cart-btn" onclick="toggleCart()">
+            <i class="fas fa-shopping-bag"></i>
+            <span class="cart-count" id="cart-count">0</span>
+        </button>
     </div>
+</header>
 
-    <div id="qrContainer" class="qr-container"></div>
+<div class="container">
+    <aside>
+        <h3>FILTERS • LFG</h3>
 
-    <p id="paymentStatus" style="white-space: pre-line; font-size: 0.95rem; margin: 1rem 0;"></p>
-    <p style="font-size: 0.85rem; opacity: 0.7;" id="paymentLinkText"></p>
+        <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input type="text" id="search-input" placeholder="Buscar drip..." oninput="filterProducts()">
+        </div>
 
-    <button id="closeModal" style="margin-top: 1rem; padding: 0.8rem 2rem; background: #444; color: white; border: none; border-radius: 8px; cursor: pointer;">
-      Cerrar
-    </button>
-  </div>
+        <div class="filter-group">
+            <label>Categoría</label>
+            <select id="category-filter" onchange="filterProducts()">
+                <option value="all">Todo el drip</option>
+                <option value="ropa">Ropa pump</option>
+                <option value="accesorios">Accesorios degens</option>
+            </select>
+        </div>
+
+        <div class="filter-group">
+            <label>Precio máx (USD)</label>
+            <input type="range" id="price-max" min="0" max="200" value="200" step="5" oninput="updatePrice()" onchange="filterProducts()">
+            <div style="margin-top:0.4rem; color:var(--neon-yellow)">Hasta: $<span id="price-value">200</span></div>
+        </div>
+
+        <div class="filter-group">
+            <label>Orden</label>
+            <select id="sort-select" onchange="filterProducts()">
+                <option value="default">Más reciente</option>
+                <option value="price-asc">Precio: cheap → moon</option>
+                <option value="price-desc">Precio: moon → cheap</option>
+                <option value="name">A-Z</option>
+            </select>
+        </div>
+    </aside>
+
+    <main>
+        <div class="controls" style="flex-wrap:wrap; gap:1rem; margin-bottom:1.5rem;">
+            <h2 style="color:var(--neon-yellow); text-shadow:var(--glow-yellow); font-family:'Orbitron';">
+                $YEAH MERCH • BREAK THE CHAINS
+            </h2>
+            <span id="results-count" style="color:#cc99ff;">0 items</span>
+        </div>
+
+        <div class="products-grid" id="products-container"></div>
+    </main>
+</div>
+
+<!-- CARRITO -->
+<div class="cart-overlay" id="cart-overlay">
+    <div class="cart-sidebar">
+        <div class="cart-header">
+            <h2>TU CART • PUMP IT</h2>
+            <button onclick="toggleCart()" style="background:none;border:none;color:var(--neon-yellow);font-size:2.5rem;cursor:pointer;">×</button>
+        </div>
+
+        <div class="cart-items" id="cart-items-container"></div>
+
+        <div style="padding:1.5rem 1.8rem; border-top:3px dashed var(--neon-yellow);">
+            <div style="display:flex;justify-content:space-between;font-size:1.4rem;margin-bottom:1rem;">
+                <span>Total:</span>
+                <span id="cart-total-price" style="color:var(--neon-yellow);font-weight:bold;">$0.00</span>
+            </div>
+            <button class="btn-checkout" onclick="checkout()">CHECKOUT • MOON</button>
+        </div>
+    </div>
 </div>
 
 <script>
-  // ──────────────────────────────────────────────
-  //           CONFIGURACIÓN OBLIGATORIA
-  // ──────────────────────────────────────────────
-  const MERCHANT_ADDRESS = 'TuDirecciónSolanaAquí111111111111111111111111111'; // ← CAMBIA ESTO YA
-  const MEMO = 'Merch XTREME - $YEAH';
+// Productos con rutas locales (carpeta "imagenes/")
+const products = [
+    { 
+        id: 1, 
+        name: "Blood, sweat & $YEAH - T-shirt", 
+        category: "ropa", 
+        price: 42, 
+        img: "imagenes/blood-sweat-yeah-tshirt.jpg" 
+    },
+    { 
+        id: 2, 
+        name: "OH YEAH! Neon Pink Tee", 
+        category: "ropa", 
+        price: 45, 
+        img: "imagenes/oh-yeah-neon-pink-tee.jpg" 
+    },
+    { 
+        id: 3, 
+        name: "$YEAH Trucker Cap – Degen Black", 
+        category: "accesorios", 
+        price: 34, 
+        img: "imagenes/yeah-trucker-cap-degen-black.jpg" 
+    },
+    { 
+        id: 4, 
+        name: "NGMI Long Sleeve – Yellow Print", 
+        category: "ropa", 
+        price: 55, 
+        img: "imagenes/ngmi-long-sleeve-yellow.jpg" 
+    },
+    { 
+        id: 5, 
+        name: "LFG Chain Breaker Embroidered Hoodie", 
+        category: "ropa", 
+        price: 99, 
+        img: "imagenes/lfg-hoodie-chain-breaker.jpg" 
+    },
+    { 
+        id: 6, 
+        name: "$YEAH Sticker Bomb Pack (15 uds)", 
+        category: "accesorios", 
+        price: 19, 
+        img: "imagenes/yeah-sticker-bomb-pack.jpg" 
+    },
+    { 
+        id: 7, 
+        name: "Solana Degen Mindset Tee", 
+        category: "ropa", 
+        price: 44, 
+        img: "imagenes/solana-degen-mindset-tee.jpg" 
+    },
+    { 
+        id: 8, 
+        name: "YEAH Glow Beanie – Pink/Black", 
+        category: "accesorios", 
+        price: 32, 
+        img: "imagenes/yeah-glow-beanie-pink-black.jpg" 
+    },
+];
 
-  // Tasas aproximadas febrero 2026 (actualiza con API real cuando puedas)
-  const rates = {
-    SOL:  195,      // 1 SOL ≈ $195
-    USDC: 1.00,
-    YEAH: 0.00042   // 1 $YEAH ≈ $0.00042 (ajusta según mercado)
-  };
+let cart = JSON.parse(localStorage.getItem('yeahDegenCart')) || [];
 
-  // Mints mainnet
-  const MINTS = {
-    SOL:  null,
-    USDC: 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v',
-    YEAH: '7wN4sxftxgoSzNorVSW3rQmRy7EjQDeWURfTSg3Gpump'  // Pump.fun token
-  };
+function saveCart() {
+    localStorage.setItem('yeahDegenCart', JSON.stringify(cart));
+    document.getElementById('cart-count').textContent = cart.reduce((s,i)=>s+i.quantity,0);
+}
 
-  // ──────────────────────────────────────────────
-  //           LÓGICA DE PAGO SOLANA PAY
-  // ──────────────────────────────────────────────
+function renderProducts(data) {
+    const cont = document.getElementById('products-container');
+    cont.innerHTML = data.length ? '' : '<p style="grid-column:1/-1;text-align:center;padding:4rem;color:#9988cc;font-size:1.4rem;">No drip found... NGMI</p>';
 
-  // Abre modal al checkout
-  document.querySelector('.checkout-btn')?.addEventListener('click', () => {
-    if (cart.length === 0) {
-      alert("Carrito vacío, degen 😭");
-      return;
-    }
-
-    let totalUSD = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-
-    document.getElementById('totalAmount').textContent = `Total: $${totalUSD.toFixed(2)} USD`;
-    document.getElementById('paymentModal').style.display = 'flex';
-
-    generatePayment('SOL', totalUSD); // default SOL
-  });
-
-  // Cerrar modal
-  document.getElementById('closeModal')?.addEventListener('click', () => {
-    document.getElementById('paymentModal').style.display = 'none';
-    document.getElementById('qrContainer').innerHTML = '';
-    document.getElementById('paymentStatus').textContent = '';
-  });
-
-  // Cambio de moneda
-  document.querySelectorAll('.payment-btn')?.forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.payment-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      const currency = btn.dataset.currency;
-      const totalUSD = parseFloat(document.getElementById('totalAmount').textContent.replace(/[^0-9.]/g, ''));
-      generatePayment(currency, totalUSD);
+    data.forEach(p => {
+        const div = document.createElement('div');
+        div.className = 'product-card';
+        div.innerHTML = `
+            <img class="product-img" src="${p.img}" alt="${p.name}" loading="lazy">
+            <div class="product-info">
+                <div class="product-category">${p.category.toUpperCase()}</div>
+                <div class="product-title">${p.name}</div>
+                <div class="product-price">$${p.price.toFixed(2)}</div>
+                <button class="btn-add" onclick="addToCart(${p.id})">ADD TO CART • LFG</button>
+            </div>
+        `;
+        cont.appendChild(div);
     });
-  });
 
-  async function generatePayment(currency, amountUSD) {
-    const qrContainer = document.getElementById('qrContainer');
-    qrContainer.innerHTML = '';
+    document.getElementById('results-count').textContent = `${data.length} drip${data.length!==1?'s':''}`;
+}
 
-    const rate = rates[currency] || 1;
-    let amountCrypto = amountUSD / rate;
+function filterProducts() {
+    let filtered = [...products];
 
-    // Decimals según token
-    let decimals = currency === 'SOL' ? 9 : 6;  // USDC y YEAH suelen ser 6
+    const q = document.getElementById('search-input').value.toLowerCase().trim();
+    if (q) filtered = filtered.filter(p => p.name.toLowerCase().includes(q) || p.category.includes(q));
 
-    amountCrypto = Number(amountCrypto.toFixed(decimals));
+    const cat = document.getElementById('category-filter').value;
+    if (cat !== 'all') filtered = filtered.filter(p => p.category === cat);
 
-    const mint = MINTS[currency];
+    const maxP = +document.getElementById('price-max').value;
+    filtered = filtered.filter(p => p.price <= maxP);
 
-    // Reference único para poder trackear después (opcional pero recomendado)
-    const reference = crypto.randomUUID?.() || Date.now().toString();
+    const sort = document.getElementById('sort-select').value;
+    if (sort === 'price-asc')  filtered.sort((a,b)=>a.price-b.price);
+    if (sort === 'price-desc') filtered.sort((a,b)=>b.price-a.price);
+    if (sort === 'name')       filtered.sort((a,b)=>a.name.localeCompare(b.name));
 
-    // URI Solana Pay
-    let uri = `solana:${MERCHANT_ADDRESS}?`;
-    uri += `amount=${amountCrypto}`;
-    uri += `&label=Merch%20XTREME`;
-    uri += `&message=${encodeURIComponent(MEMO + ` - $${amountUSD.toFixed(2)} (${currency})`)}`;
-    if (mint) uri += `&spl-token=${mint}`;
-    uri += `&reference=${reference}`;
+    renderProducts(filtered);
+}
 
-    // Generar QR
-    try {
-      await QRCode.toCanvas(qrContainer, uri, {
-        width: 280,
-        color: { dark: '#000000', light: '#ffffff' },
-        errorCorrectionLevel: 'H'
-      });
-    } catch (err) {
-      console.error('Error QR:', err);
-      document.getElementById('paymentStatus').textContent = 'Error al generar QR 😢 Intenta otra moneda.';
-      return;
+function updatePrice() {
+    document.getElementById('price-value').textContent = document.getElementById('price-max').value;
+}
+
+function addToCart(id) {
+    const prod = products.find(p=>p.id===id);
+    if (!prod) return;
+    const exist = cart.find(i=>i.id===id);
+    if (exist) exist.quantity++;
+    else cart.push({...prod, quantity:1});
+
+    saveCart();
+    renderCart();
+}
+
+function changeQty(id, delta) {
+    const item = cart.find(i=>i.id===id);
+    if (!item) return;
+    item.quantity = Math.max(0, item.quantity + delta);
+    if (item.quantity === 0) cart = cart.filter(i=>i.id!==id);
+    saveCart();
+    renderCart();
+}
+
+function removeFromCart(id) {
+    cart = cart.filter(i=>i.id!==id);
+    saveCart();
+    renderCart();
+}
+
+function renderCart() {
+    const cont = document.getElementById('cart-items-container');
+    if (!cart.length) {
+        cont.innerHTML = `
+            <div style="text-align:center; padding:4rem 1rem; color:#9988cc;">
+                <i class="fas fa-skull-crossbones" style="font-size:4rem; opacity:0.6; margin-bottom:1rem;"></i><br>
+                Cart vacío... no seas NGMI, compra drip
+            </div>
+        `;
+    } else {
+        cont.innerHTML = cart.map(item => `
+            <div class="cart-item">
+                <img src="${item.img}" alt="${item.name}" loading="lazy">
+                <div style="flex:1;">
+                    <div style="font-weight:bold;">${item.name}</div>
+                    <div style="color:var(--neon-yellow);">
+                        $${item.price.toFixed(2)} × ${item.quantity} = $${(item.price*item.quantity).toFixed(2)}
+                    </div>
+                    <div style="margin:0.5rem 0;">
+                        <button onclick="changeQty(${item.id},-1)" style="background:#330066;color:white;border:none;padding:0.3rem 0.8rem;border-radius:4px;cursor:pointer;">−</button>
+                        <span style="margin:0 0.8rem;">${item.quantity}</span>
+                        <button onclick="changeQty(${item.id},1)"  style="background:#330066;color:white;border:none;padding:0.3rem 0.8rem;border-radius:4px;cursor:pointer;">+</button>
+                    </div>
+                    <button onclick="removeFromCart(${item.id})" style="color:var(--danger);background:none;border:none;font-size:0.9rem;cursor:pointer;">
+                        <i class="fas fa-trash"></i> Remove
+                    </button>
+                </div>
+            </div>
+        `).join('');
     }
 
-    // Mostrar info al usuario
-    document.getElementById('paymentStatus').textContent = 
-      `Envía exactamente ${amountCrypto} ${currency}\n` +
-      `≈ $${amountUSD.toFixed(2)} USD\n\n` +
-      `Usa Phantom, Backpack o Solflare.\n¡No envíes menos!`;
+    const total = cart.reduce((s,i)=>s + i.price*i.quantity, 0);
+    document.getElementById('cart-total-price').textContent = `$${total.toFixed(2)}`;
+}
 
-    document.getElementById('paymentLinkText').textContent = uri;
+function toggleCart() {
+    document.getElementById('cart-overlay').classList.toggle('active');
+}
 
-    console.log(`Reference para trackear pago: ${reference}`);
-  }
+function checkout() {
+    if (!cart.length) return alert("Cart vacío... LFG?");
+    alert("Checkout simulado • Serás redirigido a Jupiter / Raydium cuando $YEAH moonice la pasarela real 🚀\nTotal: " + document.getElementById('cart-total-price').textContent);
+    cart = [];
+    saveCart();
+    renderCart();
+    toggleCart();
+}
 
-  // ... Aquí pones el resto de tu JavaScript (addToCart, updateCart, filtros, etc.)
+// Init
+document.addEventListener('DOMContentLoaded', () => {
+    renderProducts(products);
+    saveCart(); // actualiza contador inicial
+    renderCart();
+});
 </script>
+</body>
+</html>
