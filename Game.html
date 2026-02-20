@@ -3,26 +3,42 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Break the Chains – $YEAH Conviction Clicker</title>
+  <title>Break the Chains – $YEAH Conviction Clicker Pro</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-  
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="manifest" href="data:application/manifest+json,{
+    'name': 'Break the Chains $YEAH',
+    'short_name': '$YEAH Clicker',
+    'start_url': '.',
+    'display': 'standalone',
+    'background_color': '#0a0a0a',
+    'theme_color': '#ff1493',
+    'icons': [{'src': 'data:image/svg+xml;base64,...', 'sizes': '192x192', 'type': 'image/png'}]
+  }">
   <style>
     :root {
-      --bg: #0a0a0a;
+      --bg-primary: #0a0a0a;
+      --bg-secondary: #1a0f1f;
       --accent: #ff1493;
       --accent-dark: #c20e70;
       --gold: #ffd700;
-      --chain: #444;
-      --text: #eee;
+      --chain: #666;
+      --text-primary: #ffffff;
+      --text-secondary: #cccccc;
+      --shadow-glow: 0 0 20px rgba(255,20,147,0.6);
+      --shadow-gold: 0 0 15px rgba(255,215,0,0.6);
     }
-    
+
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
       height: 100vh;
-      background: var(--bg);
-      color: var(--text);
+      background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 50%, var(--bg-primary) 100%);
+      color: var(--text-primary);
       font-family: 'Inter', sans-serif;
       display: flex;
       flex-direction: column;
@@ -30,272 +46,752 @@
       justify-content: center;
       overflow: hidden;
       user-select: none;
+      position: relative;
     }
-    
+
+    /* Animated background particles */
+    #bg-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      opacity: 0.3;
+    }
+
     h1 {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 3.2rem;
-      background: linear-gradient(90deg, var(--gold), var(--accent));
+      font-family: 'Orbitron', monospace;
+      font-size: clamp(2rem, 6vw, 4rem);
+      font-weight: 900;
+      background: linear-gradient(90deg, var(--gold), var(--accent), var(--gold));
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
-      margin: 0.4em 0 0.2em;
-      text-shadow: 0 0 20px rgba(255,20,147,0.5);
+      margin: 0.5em 0;
+      text-shadow: var(--shadow-glow);
+      animation: glowPulse 2s ease-in-out infinite alternate;
     }
-    
+
+    @keyframes glowPulse {
+      0% { filter: drop-shadow(var(--shadow-glow)); }
+      100% { filter: drop-shadow(0 0 30px rgba(255,20,147,0.8)); }
+    }
+
     #score {
-      font-size: 3.8rem;
-      font-weight: bold;
+      font-family: 'Orbitron', monospace;
+      font-size: clamp(2.5rem, 8vw, 5rem);
+      font-weight: 700;
       color: var(--gold);
-      margin: 0.2em 0;
-      text-shadow: 0 0 15px var(--gold);
+      margin: 0.5em 0;
+      text-shadow: var(--shadow-gold);
     }
-    
+
     #chain-container {
       position: relative;
-      width: 280px;
-      height: 280px;
-      margin: 1.5em 0;
+      width: clamp(200px, 40vw, 300px);
+      height: clamp(200px, 40vw, 300px);
+      margin: 1em 0;
       cursor: pointer;
+      border-radius: 20px;
+      padding: 20px;
+      background: rgba(255,20,147,0.05);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,20,147,0.2);
+      transition: all 0.3s ease;
     }
-    
+
+    #chain-container:hover {
+      box-shadow: var(--shadow-glow);
+      transform: scale(1.02);
+    }
+
     #chain {
       width: 100%;
       height: 100%;
-      transition: transform 0.08s;
+      filter: drop-shadow(var(--shadow-glow));
+      transition: all 0.1s ease;
+      border-radius: 10px;
     }
-    
+
     #chain:active {
-      transform: scale(0.92);
+      transform: scale(0.95) rotate(5deg);
     }
-    
+
     .particle {
       position: absolute;
       pointer-events: none;
-      font-size: 1.8rem;
-      font-weight: bold;
-      color: var(--accent);
-      text-shadow: 0 0 10px var(--accent);
-      animation: floatUp 1s forwards;
-      user-select: none;
+      font-family: 'Orbitron', monospace;
+      font-size: 1.5rem;
+      font-weight: 900;
+      color: var(--gold);
+      text-shadow: var(--shadow-gold);
+      animation: particleFloat 1.2s ease-out forwards;
+      z-index: 10;
     }
-    
-    @keyframes floatUp {
-      0%   { opacity: 1; transform: translateY(0) scale(1); }
-      100% { opacity: 0; transform: translateY(-140px) scale(1.4); }
+
+    @keyframes particleFloat {
+      0% { opacity: 1; transform: translateY(0) scale(1); }
+      100% { opacity: 0; transform: translateY(-150px) scale(1.5) rotate(360deg); }
     }
-    
-    .upgrades {
+
+    .tabs {
       display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
       gap: 1rem;
-      max-width: 90%;
-      margin-top: 2rem;
+      margin-bottom: 1rem;
     }
-    
-    .upgrade-btn {
-      background: #111;
+
+    .tab-btn {
+      background: rgba(17,17,17,0.8);
       border: 2px solid var(--chain);
-      border-radius: 12px;
-      padding: 1rem 1.4rem;
-      min-width: 220px;
+      border-radius: 20px;
+      padding: 0.8rem 1.5rem;
+      font-family: 'Orbitron', monospace;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      color: var(--text-secondary);
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(45deg, var(--accent), var(--accent-dark));
+      border-color: var(--accent);
+      color: white;
+      box-shadow: var(--shadow-glow);
+    }
+
+    .tab-content {
+      display: none;
+      width: 90%;
+      max-width: 800px;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    .upgrades, .stats, .achievements {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.2rem;
+      padding: 1rem;
+    }
+
+    .upgrade-btn, .achievement {
+      background: rgba(17,17,17,0.9);
+      border: 2px solid var(--chain);
+      border-radius: 16px;
+      padding: 1.2rem;
       text-align: left;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: all 0.3s;
+      backdrop-filter: blur(10px);
+      position: relative;
+      overflow: hidden;
     }
-    
+
+    .upgrade-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    .upgrade-btn:hover::before {
+      left: 100%;
+    }
+
     .upgrade-btn:hover {
       border-color: var(--accent);
-      transform: translateY(-4px);
-      box-shadow: 0 8px 25px rgba(255,20,147,0.25);
+      transform: translateY(-8px);
+      box-shadow: var(--shadow-glow);
     }
-    
+
     .upgrade-btn.disabled {
-      opacity: 0.4;
+      opacity: 0.5;
       cursor: not-allowed;
+      transform: none;
+    }
+
+    .upgrade-btn.disabled:hover {
       transform: none;
       box-shadow: none;
     }
-    
+
     .upgrade-name {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 1.3rem;
+      font-family: 'Orbitron', monospace;
+      font-size: 1.2rem;
       color: var(--gold);
-      margin-bottom: 0.3em;
+      margin-bottom: 0.4em;
     }
-    
+
     .upgrade-desc {
-      font-size: 0.95rem;
-      color: #ccc;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      margin-bottom: 0.5em;
     }
-    
+
     .upgrade-cost {
-      font-weight: bold;
+      font-weight: 700;
       color: var(--accent);
+      font-size: 1.1rem;
+    }
+
+    .upgrade-owned {
+      position: absolute;
+      top: 0.5rem;
+      right: 0.5rem;
+      background: var(--accent);
+      color: white;
+      border-radius: 50%;
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 4px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 2px;
+      overflow: hidden;
       margin-top: 0.5em;
     }
-    
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--gold), var(--accent));
+      width: 0%;
+      transition: width 0.3s;
+    }
+
+    .prestige-btn {
+      background: linear-gradient(45deg, var(--gold), #ffaa00);
+      border: none;
+      border-radius: 20px;
+      padding: 1rem 2rem;
+      font-family: 'Orbitron', monospace;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #000;
+      cursor: pointer;
+      margin: 1rem;
+      box-shadow: var(--shadow-gold);
+      transition: all 0.3s;
+    }
+
+    .prestige-btn:hover:not(:disabled) {
+      transform: scale(1.05);
+      box-shadow: 0 0 30px rgba(255,215,0,0.8);
+    }
+
+    .prestige-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .buy-token {
+      position: fixed;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      background: linear-gradient(45deg, var(--accent), var(--accent-dark));
+      border: none;
+      border-radius: 50px;
+      padding: 1rem 2rem;
+      font-family: 'Orbitron', monospace;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: white;
+      cursor: pointer;
+      box-shadow: var(--shadow-glow);
+      z-index: 100;
+      transition: all 0.3s;
+    }
+
+    .buy-token:hover {
+      transform: translateX(-50%) scale(1.05);
+      box-shadow: 0 0 40px rgba(255,20,147,0.9);
+    }
+
     footer {
-      position: absolute;
-      bottom: 1.5rem;
-      font-size: 0.9rem;
-      opacity: 0.7;
+      position: fixed;
+      bottom: 0.5rem;
+      font-size: 0.8rem;
+      opacity: 0.8;
+      text-align: center;
+      z-index: 50;
+    }
+
+    .sound-toggle {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      background: rgba(0,0,0,0.5);
+      border: 2px solid var(--accent);
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      cursor: pointer;
+      color: var(--accent);
+      font-size: 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+    }
+
+    @media (max-width: 768px) {
+      .upgrades, .stats, .achievements {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
 <body>
+  <canvas id="bg-canvas"></canvas>
+
+  <button class="sound-toggle" id="soundToggle">🔊</button>
 
   <h1>Break the Chains</h1>
   <div id="score">0 $YEAH Conviction</div>
+  <div id="multiplier">x1.00</div>
 
   <div id="chain-container">
-    <img id="chain" src="https://i.imgur.com/3ZxK8fL.png" alt="Chain to break" draggable="false"/>
+    <!-- SVG Chain for scalability and glow -->
+    <svg id="chain" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <filter id="glow">
+          <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+          <feMerge> 
+            <feMergeNode in="coloredBlur"/>
+            <feMergeNode in="SourceGraphic"/>
+          </feMerge>
+        </filter>
+        <radialGradient id="chainGrad" cx="50%" cy="50%">
+          <stop offset="0%" stop-color="var(--accent)"/>
+          <stop offset="50%" stop-color="#ffffff"/>
+          <stop offset="100%" stop-color="var(--accent-dark)"/>
+        </radialGradient>
+      </defs>
+      <!-- Multiple chain links for realistic look -->
+      <circle cx="150" cy="80" r="40" fill="url(#chainGrad)" stroke="#fff" stroke-width="4" filter="url(#glow)"/>
+      <circle cx="150" cy="220" r="40" fill="url(#chainGrad)" stroke="#fff" stroke-width="4" filter="url(#glow)"/>
+      <circle cx="80" cy="150" r="40" fill="url(#chainGrad)" stroke="#fff" stroke-width="4" filter="url(#glow)"/>
+      <circle cx="220" cy="150" r="40" fill="url(#chainGrad)" stroke="#fff" stroke-width="4" filter="url(#glow)"/>
+      <!-- Connectors -->
+      <path d="M150 120 Q150 150 150 180" stroke="#fff" stroke-width="8" stroke-linecap="round" filter="url(#glow)" fill="none"/>
+      <path d="M110 150 Q140 150 170 150" stroke="#fff" stroke-width="8" stroke-linecap="round" filter="url(#glow)" fill="none"/>
+      <path d="M190 150 Q220 150 250 150" stroke="#fff" stroke-width="8" stroke-linecap="round" filter="url(#glow)" fill="none"/>
+      <!-- Break effect overlay (hidden initially) -->
+      <g id="break-effect" opacity="0">
+        <path d="M150 120 L150 180" stroke="var(--gold)" stroke-width="20" stroke-linecap="round"/>
+        <circle cx="150" cy="150" r="30" fill="var(--gold)" opacity="0.8"/>
+      </g>
+    </svg>
   </div>
 
-  <div class="upgrades">
-    <div class="upgrade-btn" id="auto1">
-      <div class="upgrade-name">Mindset Shiller</div>
-      <div class="upgrade-desc">Rompe 1 cadena cada 1.2s</div>
-      <div class="upgrade-cost">Costo: <span>50</span> Conviction</div>
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="upgrades">Upgrades</button>
+    <button class="tab-btn" data-tab="stats">Stats</button>
+    <button class="tab-btn" data-tab="achievements">Achievements</button>
+  </div>
+
+  <div id="upgrades-tab" class="tab-content active">
+    <div class="upgrades">
+      <!-- Upgrades will be populated by JS -->
     </div>
-    
-    <div class="upgrade-btn" id="auto2">
-      <div class="upgrade-name">Conviction Chad</div>
-      <div class="upgrade-desc">+8 daño por clic</div>
-      <div class="upgrade-cost">Costo: <span>320</span> Conviction</div>
-    </div>
-    
-    <div class="upgrade-btn" id="auto3">
-      <div class="upgrade-name">FUD Destroyer</div>
-      <div class="upgrade-desc">Rompe 5 cadenas por segundo</div>
-      <div class="upgrade-cost">Costo: <span>1800</span> Conviction</div>
+    <button class="prestige-btn" id="prestigeBtn" disabled>Prestige (1e12 Conviction)</button>
+  </div>
+
+  <div id="stats-tab" class="tab-content">
+    <div class="stats">
+      <!-- Stats populated by JS -->
     </div>
   </div>
 
-  <footer>$YEAH Movement • Break the Chains • Pure Conviction</footer>
+  <div id="achievements-tab" class="tab-content">
+    <div class="achievements">
+      <!-- Achievements populated by JS -->
+    </div>
+  </div>
+
+  <a href="https://dexscreener.com/solana/7wN4sxftxgoSzNorVSW3rQmRy7EjQDeWURfTSg3Gpump" target="_blank" class="buy-token">
+    Buy $YEAH Now 🚀
+  </a>
+
+  <footer>
+    CA: <strong>7wN4sxftxgoSzNorVSW3rQmRy7EjQDeWURfTSg3Gpump</strong> | $YEAH Movement • Break the Chains • Pure Conviction<br>
+    <a href="https://t.me/+92r6NGH6cA" target="_blank">Telegram</a> | Stay $yeah
+  </footer>
 
   <script>
-    let conviction = 0;
-    let clickPower = 1;
-    let autoPower = 0;
+    class YeahClicker {
+      constructor() {
+        this.conviction = 0;
+        this.clickPower = 1;
+        this.autoPower = 0;
+        this.multiplier = 1;
+        this.prestige = 0;
+        this.totalClicks = 0;
+        this.totalConviction = 0;
+        this.owned = {};
+        this.achievements = {};
+        this.soundEnabled = true;
+        this.lastUpdate = 0;
+        this.offlineStart = Date.now();
+        this.offlineConviction = 0;
 
-    const scoreDisplay = document.getElementById('score');
-    const chain = document.getElementById('chain');
-    const container = document.getElementById('chain-container');
+        this.upgrades = [
+          { id: 'auto1', name: 'Mindset Shiller', desc: 'Rompe 1 cadena cada 1.2s', cost: 50, power: 1, type: 'auto' },
+          { id: 'click1', name: 'Conviction Chad', desc: '+8 daño por clic', cost: 320, power: 8, type: 'click' },
+          { id: 'auto2', name: 'FUD Destroyer', desc: 'Rompe 5 cadenas por segundo', cost: 1800, power: 5, type: 'auto' },
+          { id: 'multi1', name: 'Diamond Hands', desc: '+20% auto power', cost: 7500, power: 0.2, type: 'multi' },
+          { id: 'click2', name: 'Yeah Bro', desc: '+25 daño por clic', cost: 25000, power: 25, type: 'click' },
+          { id: 'auto3', name: 'Chain Breaker Pro', desc: 'Rompe 20 cadenas/seg', cost: 100000, power: 20, type: 'auto' },
+          { id: 'multi2', name: 'Mindset Master', desc: 'x2 todos los poderes', cost: 500000, power: 2, type: 'multi-all' }
+        ];
 
-    // Upgrades
-    const upgrades = {
-      auto1: { cost: 50,     owned: 0, power: 1,    elem: document.getElementById('auto1') },
-      auto2: { cost: 320,    owned: 0, power: 8,    elem: document.getElementById('auto2'), isClick: true },
-      auto3: { cost: 1800,   owned: 0, power: 5,    elem: document.getElementById('auto3') }
-    };
+        this.achievementsList = [
+          { id: 'firstClick', name: 'Primer Clic', desc: '¡Rompe tu primera cadena!', target: 1, reward: 10 },
+          { id: '100clicks', name: 'Degen Inicial', desc: '100 clics totales', target: 100, reward: 100 },
+          { id: '1kConv', name: 'Conviction Novato', desc: '1k Conviction', target: 1000, reward: 500 },
+          { id: 'prestige1', name: 'Prestige Desbloqueado', desc: 'Primer prestige', target: 1, reward: 10000 }
+        ];
 
-    function updateScore() {
-      scoreDisplay.textContent = Math.floor(conviction).toLocaleString() + " $YEAH Conviction";
-      
-      // Actualizar botones de upgrade
-      Object.keys(upgrades).forEach(key => {
-        const up = upgrades[key];
-        const cost = Math.floor(up.cost * Math.pow(1.18, up.owned));
-        up.elem.querySelector('.upgrade-cost span').textContent = cost.toLocaleString();
-        
-        if (conviction >= cost) {
-          up.elem.classList.remove('disabled');
-        } else {
-          up.elem.classList.add('disabled');
-        }
-      });
-    }
-
-    function createParticle(x, y) {
-      const p = document.createElement('div');
-      p.className = 'particle';
-      p.textContent = `+${clickPower}`;
-      p.style.left = x + 'px';
-      p.style.top = y + 'px';
-      container.appendChild(p);
-      
-      setTimeout(() => p.remove(), 1200);
-    }
-
-    // Click en la cadena
-    chain.addEventListener('click', (e) => {
-      const rect = container.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      
-      conviction += clickPower;
-      createParticle(x, y);
-      updateScore();
-      
-      // pequeño shake
-      chain.style.transform = 'scale(0.92)';
-      setTimeout(() => chain.style.transform = 'scale(1)', 80);
-    });
-
-    // Comprar upgrade
-    Object.keys(upgrades).forEach(key => {
-      const up = upgrades[key];
-      up.elem.addEventListener('click', () => {
-        const cost = Math.floor(up.cost * Math.pow(1.18, up.owned));
-        if (conviction >= cost) {
-          conviction -= cost;
-          up.owned++;
-          
-          if (up.isClick) {
-            clickPower += up.power;
-          } else {
-            autoPower += up.power;
-          }
-          
-          updateScore();
-        }
-      });
-    });
-
-    // Auto clicking
-    setInterval(() => {
-      if (autoPower > 0) {
-        conviction += autoPower / 10; // 10 veces por segundo para smooth
-        updateScore();
+        this.init();
       }
-    }, 100);
 
-    // Guardar progreso (opcional - localStorage)
-    function saveGame() {
-      const data = {
-        conviction,
-        clickPower,
-        autoPower,
-        upgrades: Object.fromEntries(
-          Object.entries(upgrades).map(([k,v]) => [k, {owned: v.owned}])
-        )
-      };
-      localStorage.setItem('yeahConvictionClicker', JSON.stringify(data));
-    }
+      init() {
+        this.scoreEl = document.getElementById('score');
+        this.multiEl = document.getElementById('multiplier');
+        this.chainEl = document.getElementById('chain');
+        this.containerEl = document.getElementById('chain-container');
+        this.upgradesEl = document.querySelector('.upgrades');
+        this.prestigeBtn = document.getElementById('prestigeBtn');
 
-    function loadGame() {
-      const saved = localStorage.getItem('yeahConvictionClicker');
-      if (saved) {
-        const data = JSON.parse(saved);
-        conviction = data.conviction || 0;
-        clickPower = data.clickPower || 1;
-        autoPower = data.autoPower || 0;
-        
-        if (data.upgrades) {
-          Object.keys(data.upgrades).forEach(k => {
-            if (upgrades[k]) upgrades[k].owned = data.upgrades[k].owned || 0;
+        this.loadGame();
+        this.setupEventListeners();
+        this.createBgParticles();
+        this.updateDisplay();
+        this.gameLoop();
+        this.autoSave();
+      }
+
+      setupEventListeners() {
+        this.containerEl.addEventListener('click', (e) => this.handleClick(e));
+
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            e.target.classList.add('active');
+            document.getElementById(e.target.dataset.tab + '-tab').classList.add('active');
+          });
+        });
+
+        this.prestigeBtn.addEventListener('click', () => this.prestigeReset());
+
+        document.getElementById('soundToggle').addEventListener('click', () => {
+          this.soundEnabled = !this.soundEnabled;
+          document.getElementById('soundToggle').textContent = this.soundEnabled ? '🔊' : '🔇';
+        });
+      }
+
+      handleClick(e) {
+        const rect = this.containerEl.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        this.conviction += this.clickPower * this.multiplier;
+        this.totalClicks++;
+        this.totalConviction += this.clickPower * this.multiplier;
+        this.createParticle(x, y, `+${Math.floor(this.clickPower * this.multiplier)}`);
+        this.playSound();
+        this.checkAchievements();
+
+        // Shake and break effect
+        this.chainEl.style.animation = 'none';
+        setTimeout(() => {
+          this.chainEl.style.animation = 'shake 0.2s ease-out';
+        }, 10);
+
+        document.getElementById('break-effect').style.opacity = '1';
+        setTimeout(() => {
+          document.getElementById('break-effect').style.opacity = '0';
+        }, 200);
+
+        this.updateDisplay();
+      }
+
+      createParticle(x, y, text) {
+        const p = document.createElement('div');
+        p.className = 'particle';
+        p.textContent = text;
+        p.style.left = (x - 20) + 'px';
+        p.style.top = (y + 20) + 'px';
+        this.containerEl.appendChild(p);
+        setTimeout(() => p.remove(), 1200);
+      }
+
+      playSound() {
+        if (!this.soundEnabled) return;
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const oscillator = audioCtx.createOscillator();
+        const gainNode = audioCtx.createGain();
+        oscillator.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+        oscillator.frequency.value = 800;
+        oscillator.type = 'sine';
+        gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+        oscillator.start(audioCtx.currentTime);
+        oscillator.stop(audioCtx.currentTime + 0.1);
+      }
+
+      updateUpgrades() {
+        this.upgradesEl.innerHTML = '';
+        this.upgrades.forEach(up => {
+          const owned = this.owned[up.id] || 0;
+          const nextCost = Math.floor(up.cost * Math.pow(1.15, owned));
+          const canAfford = this.conviction >= nextCost;
+
+          const div = document.createElement('div');
+          div.className = `upgrade-btn ${!canAfford ? 'disabled' : ''}`;
+          div.id = up.id;
+          div.innerHTML = `
+            <div class="upgrade-owned">${owned}</div>
+            <div class="upgrade-name">${up.name}</div>
+            <div class="upgrade-desc">${up.desc}</div>
+            <div class="upgrade-cost">Costo: <strong>${nextCost.toLocaleString()}</strong></div>
+            <div class="progress-bar"><div class="progress-fill" style="width: ${Math.min((this.conviction / nextCost) * 100, 100)}%"></div></div>
+          `;
+          div.addEventListener('click', () => this.buyUpgrade(up.id));
+          this.upgradesEl.appendChild(div);
+        });
+      }
+
+      buyUpgrade(id) {
+        const up = this.upgrades.find(u => u.id === id);
+        const owned = this.owned[up.id] || 0;
+        const cost = Math.floor(up.cost * Math.pow(1.15, owned));
+        if (this.conviction >= cost) {
+          this.conviction -= cost;
+          this.owned[up.id] = owned + 1;
+
+          if (up.type === 'click') {
+            this.clickPower += up.power;
+          } else if (up.type === 'auto') {
+            this.autoPower += up.power;
+          } else if (up.type === 'multi') {
+            this.multiplier *= (1 + up.power);
+          } else if (up.type === 'multi-all') {
+            this.clickPower *= up.power;
+            this.autoPower *= up.power;
+          }
+
+          this.updateDisplay();
+          this.checkAchievements();
+        }
+      }
+
+      prestigeReset() {
+        if (this.conviction >= 1e12) {
+          this.prestige++;
+          this.multiplier += 0.01 * this.prestige; // +1% per level
+          this.conviction = 0;
+          this.clickPower = 1;
+          this.autoPower = 0;
+          this.owned = {};
+          this.updateDisplay();
+          this.loadAchievements(); // Unlock prestige ach
+        }
+      }
+
+      checkAchievements() {
+        this.achievementsList.forEach(ach => {
+          if (!this.achievements[ach.id]) {
+            let unlocked = false;
+            if (ach.id === 'firstClick' && this.totalClicks >= 1) unlocked = true;
+            if (ach.id === '100clicks' && this.totalClicks >= 100) unlocked = true;
+            if (ach.id === '1kConv' && this.totalConviction >= 1000) unlocked = true;
+            if (ach.id === 'prestige1' && this.prestige >= 1) unlocked = true;
+
+            if (unlocked) {
+              this.achievements[ach.id] = true;
+              this.conviction += ach.reward;
+              this.updateDisplay();
+            }
+          }
+        });
+      }
+
+      updateStats() {
+        const statsEl = document.querySelector('.stats');
+        statsEl.innerHTML = `
+          <div class="upgrade-btn">
+            <div class="upgrade-name">Total Clics</div>
+            <div class="upgrade-desc">${this.totalClicks.toLocaleString()}</div>
+          </div>
+          <div class="upgrade-btn">
+            <div class="upgrade-name">Conviction Total</div>
+            <div class="upgrade-desc">${Math.floor(this.totalConviction).toLocaleString()}</div>
+          </div>
+          <div class="upgrade-btn">
+            <div class="upgrade-name">Prestige Nivel</div>
+            <div class="upgrade-desc">${this.prestige}</div>
+          </div>
+          <div class="upgrade-btn">
+            <div class="upgrade-name">Auto/Seg</div>
+            <div class="upgrade-desc">${Math.floor(this.autoPower * this.multiplier)}</div>
+          </div>
+        `;
+      }
+
+      updateAchievements() {
+        const achEl = document.querySelector('.achievements');
+        achEl.innerHTML = '';
+        this.achievementsList.forEach(ach => {
+          const unlocked = this.achievements[ach.id];
+          const div = document.createElement('div');
+          div.className = `achievement ${unlocked ? 'unlocked' : ''}`;
+          div.innerHTML = `
+            <div class="upgrade-name">${ach.name}</div>
+            <div class="upgrade-desc">${ach.desc} ${unlocked ? '✅' : '🔒'}</div>
+          `;
+          achEl.appendChild(div);
+        });
+      }
+
+      updateDisplay() {
+        this.scoreEl.textContent = Math.floor(this.conviction).toLocaleString() + ' $YEAH Conviction';
+        this.multiEl.textContent = `x${this.multiplier.toFixed(2)}`;
+        this.prestigeBtn.disabled = this.conviction < 1e12;
+        this.prestigeBtn.textContent = `Prestige (1e12) +${(this.prestige * 0.01 * 100).toFixed(0)}%`;
+
+        this.updateUpgrades();
+        this.updateStats();
+        this.updateAchievements();
+      }
+
+      gameLoop() {
+        const now = performance.now();
+        const delta = (now - this.lastUpdate) / 1000;
+        this.conviction += this.autoPower * this.multiplier * delta;
+        this.totalConviction += this.autoPower * this.multiplier * delta;
+        this.lastUpdate = now;
+        this.updateDisplay();
+        requestAnimationFrame(() => this.gameLoop());
+      }
+
+      createBgParticles() {
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        window.addEventListener('resize', () => {
+          canvas.width = window.innerWidth;
+          canvas.height = window.innerHeight;
+        });
+
+        const particles = [];
+        for (let i = 0; i < 100; i++) {
+          particles.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            vx: (Math.random() - 0.5) * 0.5,
+            vy: (Math.random() - 0.5) * 0.5,
+            radius: Math.random() * 2 + 1,
+            alpha: Math.random() * 0.5 + 0.2
           });
         }
-        updateScore();
+
+        function animate() {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          particles.forEach(p => {
+            ctx.save();
+            ctx.globalAlpha = p.alpha;
+            ctx.fillStyle = '#ff1493';
+            ctx.shadowColor = '#ff1493';
+            ctx.shadowBlur = 10;
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.restore();
+
+            p.x += p.vx;
+            p.y += p.vy;
+            if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+            if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+          });
+          requestAnimationFrame(animate);
+        }
+        animate();
+      }
+
+      autoSave() {
+        setInterval(() => this.saveGame(), 30000);
+      }
+
+      saveGame() {
+        const data = {
+          conviction: this.conviction,
+          clickPower: this.clickPower,
+          autoPower: this.autoPower,
+          multiplier: this.multiplier,
+          prestige: this.prestige,
+          totalClicks: this.totalClicks,
+          totalConviction: this.totalConviction,
+          owned: this.owned,
+          achievements: this.achievements,
+          offlineStart: Date.now()
+        };
+        localStorage.setItem('yeahConvictionClickerPro', JSON.stringify(data));
+      }
+
+      loadGame() {
+        const saved = localStorage.getItem('yeahConvictionClickerPro');
+        if (saved) {
+          const data = JSON.parse(saved);
+          this.conviction = data.conviction || 0;
+          this.clickPower = data.clickPower || 1;
+          this.autoPower = data.autoPower || 0;
+          this.multiplier = data.multiplier || 1;
+          this.prestige = data.prestige || 0;
+          this.totalClicks = data.totalClicks || 0;
+          this.totalConviction = data.totalConviction || 0;
+          this.owned = data.owned || {};
+          this.achievements = data.achievements || {};
+          // Offline progress (simple: auto for time away)
+          const offlineTime = (Date.now() - (data.offlineStart || Date.now())) / 1000;
+          this.conviction += this.autoPower * this.multiplier * Math.min(offlineTime, 3600); // max 1h
+        }
+        this.multiplier += this.prestige * 0.01;
       }
     }
 
-    loadGame();
-    setInterval(saveGame, 30000); // auto save cada 30s
+    // Add shake animation
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        25% { transform: translateX(-5px); }
+        75% { transform: translateX(5px); }
+      }
+    `;
+    document.head.appendChild(style);
 
-    updateScore();
+    // Init game
+    new YeahClicker();
   </script>
 </body>
 </html>
