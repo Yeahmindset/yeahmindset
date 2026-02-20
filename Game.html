@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Break the Chains – $YEAH Conviction Clicker</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg: #0a0a0a;
+      --accent: #ff1493;
+      --accent-dark: #c20e70;
+      --gold: #ffd700;
+      --chain: #444;
+      --text: #eee;
+    }
+    
+    body {
+      margin: 0;
+      height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      user-select: none;
+    }
+    
+    h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 3.2rem;
+      background: linear-gradient(90deg, var(--gold), var(--accent));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin: 0.4em 0 0.2em;
+      text-shadow: 0 0 20px rgba(255,20,147,0.5);
+    }
+    
+    #score {
+      font-size: 3.8rem;
+      font-weight: bold;
+      color: var(--gold);
+      margin: 0.2em 0;
+      text-shadow: 0 0 15px var(--gold);
+    }
+    
+    #chain-container {
+      position: relative;
+      width: 280px;
+      height: 280px;
+      margin: 1.5em 0;
+      cursor: pointer;
+    }
+    
+    #chain {
+      width: 100%;
+      height: 100%;
+      transition: transform 0.08s;
+    }
+    
+    #chain:active {
+      transform: scale(0.92);
+    }
+    
+    .particle {
+      position: absolute;
+      pointer-events: none;
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: var(--accent);
+      text-shadow: 0 0 10px var(--accent);
+      animation: floatUp 1s forwards;
+      user-select: none;
+    }
+    
+    @keyframes floatUp {
+      0%   { opacity: 1; transform: translateY(0) scale(1); }
+      100% { opacity: 0; transform: translateY(-140px) scale(1.4); }
+    }
+    
+    .upgrades {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+      max-width: 90%;
+      margin-top: 2rem;
+    }
+    
+    .upgrade-btn {
+      background: #111;
+      border: 2px solid var(--chain);
+      border-radius: 12px;
+      padding: 1rem 1.4rem;
+      min-width: 220px;
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .upgrade-btn:hover {
+      border-color: var(--accent);
+      transform: translateY(-4px);
+      box-shadow: 0 8px 25px rgba(255,20,147,0.25);
+    }
+    
+    .upgrade-btn.disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+    
+    .upgrade-name {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.3rem;
+      color: var(--gold);
+      margin-bottom: 0.3em;
+    }
+    
+    .upgrade-desc {
+      font-size: 0.95rem;
+      color: #ccc;
+    }
+    
+    .upgrade-cost {
+      font-weight: bold;
+      color: var(--accent);
+      margin-top: 0.5em;
+    }
+    
+    footer {
+      position: absolute;
+      bottom: 1.5rem;
+      font-size: 0.9rem;
+      opacity: 0.7;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Break the Chains</h1>
+  <div id="score">0 $YEAH Conviction</div>
+
+  <div id="chain-container">
+    <img id="chain" src="https://i.imgur.com/3ZxK8fL.png" alt="Chain to break" draggable="false"/>
+  </div>
+
+  <div class="upgrades">
+    <div class="upgrade-btn" id="auto1">
+      <div class="upgrade-name">Mindset Shiller</div>
+      <div class="upgrade-desc">Rompe 1 cadena cada 1.2s</div>
+      <div class="upgrade-cost">Costo: <span>50</span> Conviction</div>
+    </div>
+    
+    <div class="upgrade-btn" id="auto2">
+      <div class="upgrade-name">Conviction Chad</div>
+      <div class="upgrade-desc">+8 daño por clic</div>
+      <div class="upgrade-cost">Costo: <span>320</span> Conviction</div>
+    </div>
+    
+    <div class="upgrade-btn" id="auto3">
+      <div class="upgrade-name">FUD Destroyer</div>
+      <div class="upgrade-desc">Rompe 5 cadenas por segundo</div>
+      <div class="upgrade-cost">Costo: <span>1800</span> Conviction</div>
+    </div>
+  </div>
+
+  <footer>$YEAH Movement • Break the Chains • Pure Conviction</footer>
+
+  <script>
+    let conviction = 0;
+    let clickPower = 1;
+    let autoPower = 0;
+
+    const scoreDisplay = document.getElementById('score');
+    const chain = document.getElementById('chain');
+    const container = document.getElementById('chain-container');
+
+    // Upgrades
+    const upgrades = {
+      auto1: { cost: 50,     owned: 0, power: 1,    elem: document.getElementById('auto1') },
+      auto2: { cost: 320,    owned: 0, power: 8,    elem: document.getElementById('auto2'), isClick: true },
+      auto3: { cost: 1800,   owned: 0, power: 5,    elem: document.getElementById('auto3') }
+    };
+
+    function updateScore() {
+      scoreDisplay.textContent = Math.floor(conviction).toLocaleString() + " $YEAH Conviction";
+      
+      // Actualizar botones de upgrade
+      Object.keys(upgrades).forEach(key => {
+        const up = upgrades[key];
+        const cost = Math.floor(up.cost * Math.pow(1.18, up.owned));
+        up.elem.querySelector('.upgrade-cost span').textContent = cost.toLocaleString();
+        
+        if (conviction >= cost) {
+          up.elem.classList.remove('disabled');
+        } else {
+          up.elem.classList.add('disabled');
+        }
+      });
+    }
+
+    function createParticle(x, y) {
+      const p = document.createElement('div');
+      p.className = 'particle';
+      p.textContent = `+${clickPower}`;
+      p.style.left = x + 'px';
+      p.style.top = y + 'px';
+      container.appendChild(p);
+      
+      setTimeout(() => p.remove(), 1200);
+    }
+
+    // Click en la cadena
+    chain.addEventListener('click', (e) => {
+      const rect = container.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      
+      conviction += clickPower;
+      createParticle(x, y);
+      updateScore();
+      
+      // pequeño shake
+      chain.style.transform = 'scale(0.92)';
+      setTimeout(() => chain.style.transform = 'scale(1)', 80);
+    });
+
+    // Comprar upgrade
+    Object.keys(upgrades).forEach(key => {
+      const up = upgrades[key];
+      up.elem.addEventListener('click', () => {
+        const cost = Math.floor(up.cost * Math.pow(1.18, up.owned));
+        if (conviction >= cost) {
+          conviction -= cost;
+          up.owned++;
+          
+          if (up.isClick) {
+            clickPower += up.power;
+          } else {
+            autoPower += up.power;
+          }
+          
+          updateScore();
+        }
+      });
+    });
+
+    // Auto clicking
+    setInterval(() => {
+      if (autoPower > 0) {
+        conviction += autoPower / 10; // 10 veces por segundo para smooth
+        updateScore();
+      }
+    }, 100);
+
+    // Guardar progreso (opcional - localStorage)
+    function saveGame() {
+      const data = {
+        conviction,
+        clickPower,
+        autoPower,
+        upgrades: Object.fromEntries(
+          Object.entries(upgrades).map(([k,v]) => [k, {owned: v.owned}])
+        )
+      };
+      localStorage.setItem('yeahConvictionClicker', JSON.stringify(data));
+    }
+
+    function loadGame() {
+      const saved = localStorage.getItem('yeahConvictionClicker');
+      if (saved) {
+        const data = JSON.parse(saved);
+        conviction = data.conviction || 0;
+        clickPower = data.clickPower || 1;
+        autoPower = data.autoPower || 0;
+        
+        if (data.upgrades) {
+          Object.keys(data.upgrades).forEach(k => {
+            if (upgrades[k]) upgrades[k].owned = data.upgrades[k].owned || 0;
+          });
+        }
+        updateScore();
+      }
+    }
+
+    loadGame();
+    setInterval(saveGame, 30000); // auto save cada 30s
+
+    updateScore();
+  </script>
+</body>
+</html>
