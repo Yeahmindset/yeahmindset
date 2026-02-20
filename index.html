@@ -32,11 +32,7 @@
             --shadow-hover: 0 15px 40px rgba(255,20,147,0.2);
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             background: var(--bg);
@@ -63,9 +59,9 @@
         h1 {
             font-size: clamp(3rem, 8vw, 5rem);
             background: linear-gradient(90deg, var(--gold), var(--accent));
-            background-clip: text;
             -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: transparent;
             margin: 1.5rem 0 0.8rem;
             text-shadow: 0 0 20px rgba(255,20,147,0.2);
             text-align: center;
@@ -79,12 +75,8 @@
         }
 
         @keyframes glow {
-            from {
-                text-shadow: 0 0 10px var(--accent), 0 0 20px var(--accent-light);
-            }
-            to {
-                text-shadow: 0 0 20px var(--accent), 0 0 30px var(--accent-light);
-            }
+            from { text-shadow: 0 0 10px var(--accent), 0 0 20px var(--accent-light); }
+            to   { text-shadow: 0 0 20px var(--accent), 0 0 30px var(--accent-light); }
         }
 
         .hero-img {
@@ -109,10 +101,7 @@
             transition: opacity 0.8s ease-out, transform 0.8s ease-out;
         }
 
-        section.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        section.visible { opacity: 1; transform: translateY(0); }
 
         .card {
             background: var(--card-bg);
@@ -135,11 +124,7 @@
             gap: 2rem;
         }
 
-        .tokenomics h3 {
-            color: var(--accent);
-            font-size: 1.4rem;
-            margin-bottom: 0.8rem;
-        }
+        .tokenomics h3 { color: var(--accent); font-size: 1.4rem; margin-bottom: 0.8rem; }
 
         .btn {
             display: inline-block;
@@ -165,25 +150,13 @@
             box-shadow: 0 10px 25px rgba(255,20,147,0.4);
         }
 
-        .btn-secondary {
-            background: var(--accent);
-            color: white;
-        }
+        .btn-secondary { background: var(--accent); color: white; }
 
-        .btn-secondary:hover {
-            background: var(--accent-light);
-            transform: scale(1.05);
-        }
+        .btn-secondary:hover { background: var(--accent-light); transform: scale(1.05); }
 
-        .btn-copy {
-            background: var(--accent);
-            color: white;
-            padding: 10px 20px;
-        }
+        .btn-copy { background: var(--accent); color: white; padding: 10px 20px; }
 
-        .btn-copy:hover {
-            background: var(--accent-light);
-        }
+        .btn-copy:hover { background: var(--accent-light); }
 
         .contract {
             background: #111;
@@ -196,29 +169,12 @@
             border: 1px solid var(--border);
         }
 
-        .center {
-            text-align: center;
-        }
+        .center { text-align: center; }
+        .muted { color: var(--text-muted); font-size: 1rem; }
 
-        .muted {
-            color: var(--text-muted);
-            font-size: 1rem;
-        }
-
-        .hero-description {
-            font-size: 1.4rem;
-            margin-top: 1rem;
-        }
-
-        .why-description {
-            font-size: 1.2rem;
-            line-height: 1.8;
-        }
-
-        .how-to-description {
-            font-size: 1.3rem;
-            margin-bottom: 2.5rem;
-        }
+        .hero-description { font-size: 1.4rem; margin-top: 1rem; }
+        .why-description { font-size: 1.2rem; line-height: 1.8; }
+        .how-to-description { font-size: 1.3rem; margin-bottom: 2.5rem; }
 
         .step-img {
             max-width: 100%;
@@ -229,10 +185,7 @@
             transition: transform 0.3s ease, filter 0.3s ease;
         }
 
-        .step-img:hover {
-            transform: scale(1.05);
-            filter: brightness(1.1);
-        }
+        .step-img:hover { transform: scale(1.05); filter: brightness(1.1); }
 
         .phase {
             margin: 1.5rem 0;
@@ -244,9 +197,7 @@
             transition: background 0.3s ease;
         }
 
-        .phase:hover {
-            background: #222;
-        }
+        .phase:hover { background: #222; }
 
         .phase strong {
             color: var(--accent);
@@ -255,9 +206,7 @@
             font-size: 1.3rem;
         }
 
-        .faq-item {
-            margin: 1.5rem 0;
-        }
+        .faq-item { margin: 1.5rem 0; }
 
         .faq-question {
             color: var(--accent);
@@ -268,23 +217,16 @@
             transition: color 0.3s ease;
         }
 
-        .faq-question:hover {
-            color: var(--accent-light);
-        }
+        .faq-question:hover { color: var(--accent-light); }
 
         .cta-section {
             padding: 80px 0;
             background: linear-gradient(180deg, #000, #111);
         }
 
-        .cta-title {
-            margin: 3rem 0 1.5rem;
-        }
+        .cta-title { margin: 3rem 0 1.5rem; }
 
-        .cta-btn-large {
-            font-size: 1.6rem;
-            padding: 18px 50px;
-        }
+        .cta-btn-large { font-size: 1.6rem; padding: 18px 50px; }
 
         footer {
             background: #0a0a0a;
@@ -304,10 +246,7 @@
             opacity: 0.9;
         }
 
-        .footer-solana {
-            margin: 1.5rem 0;
-            font-size: 1rem;
-        }
+        .footer-solana { margin: 1.5rem 0; font-size: 1rem; }
 
         .solana-badge {
             background: linear-gradient(90deg, #9945FF, #14F195);
@@ -323,19 +262,10 @@
             gap: 1.5rem;
         }
 
-        .social a {
-            transition: transform 0.3s ease;
-        }
+        .social a { transition: transform 0.3s ease; }
+        .social a:hover { transform: scale(1.15) rotate(5deg); }
+        .social img { height: 28px; }
 
-        .social a:hover {
-            transform: scale(1.15) rotate(5deg);
-        }
-
-        .social img {
-            height: 28px;
-        }
-
-        /* Navbar */
         nav {
             position: fixed;
             top: 0;
@@ -348,9 +278,7 @@
             transition: background 0.3s ease;
         }
 
-        nav:hover {
-            background: rgba(0,0,0,1);
-        }
+        nav:hover { background: rgba(0,0,0,1); }
 
         nav .container {
             display: flex;
@@ -369,7 +297,6 @@
             text-decoration: none;
             font-weight: 500;
             transition: color 0.3s, transform 0.3s;
-            font-size: 1rem;
         }
 
         nav a:hover {
@@ -384,14 +311,8 @@
         }
 
         @media (max-width: 768px) {
-            nav ul {
-                display: none;
-            }
-
-            .menu-toggle {
-                display: block;
-            }
-
+            nav ul { display: none; }
+            .menu-toggle { display: block; }
             nav ul.open {
                 display: flex;
                 flex-direction: column;
@@ -403,6 +324,7 @@
                 padding: 1rem;
                 gap: 1rem;
             }
+            .grid { grid-template-columns: 1fr; }
         }
 
         .wallet-info {
@@ -420,32 +342,22 @@
             border: 1px solid var(--border);
         }
 
-        .sol-balance {
-            color: var(--gold);
-        }
+        .sol-balance { color: var(--gold); }
+        .yeah-balance { color: var(--accent); }
+        .wallet-address { font-family: monospace; color: var(--text-muted); }
 
-        .yeah-balance {
-            color: var(--accent);
-        }
+        .nav-wallet-btn { padding: 8px 16px; font-size: 0.95rem; }
 
-        .wallet-address {
-            font-family: monospace;
-            color: var(--text-muted);
-        }
-
-        .nav-wallet-btn {
-            padding: 8px 16px;
-            font-size: 0.95rem;
-        }
-
-        /* Moving $YEAH line */
         .marquee-container {
-            overflow: hidden;
+            width: 100vw;
+            position: relative;
+            left: 50%;
+            transform: translateX(-50%);
             background: linear-gradient(90deg, var(--accent), var(--accent-light));
-            padding: 10px 0;
-            margin: 20px 0;
-            border-radius: 8px;
+            padding: 12px 0;
+            margin: 25px 0;
             box-shadow: var(--shadow);
+            overflow: hidden;
         }
 
         .marquee {
@@ -458,17 +370,13 @@
             font-size: 2rem;
             font-weight: bold;
             color: #000;
-            padding: 0 20px;
+            padding: 0 40px;
             text-transform: uppercase;
         }
 
         @keyframes marquee {
-            from {
-                transform: translateX(0);
-            }
-            to {
-                transform: translateX(-50%);
-            }
+            from { transform: translateX(0); }
+            to   { transform: translateX(-50%); }
         }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/@solana/web3.js@latest/lib/index.iife.js"></script>
@@ -476,10 +384,9 @@
 <body>
 
 <header>
-    <!-- Navbar -->
     <nav>
         <div class="container">
-            <a href="#"><img src="https://i.imgur.com/LFWmlK1.png" alt="$YEAH Logo" style="height: 40px;"></a>
+            <a href="#"><img src="https://i.imgur.com/LFWmlK1.png" alt="$YEAH Logo" style="height: 40px;" loading="lazy"></a>
             
             <div class="menu-toggle" id="menuToggle">&#9776;</div>
             
@@ -496,9 +403,7 @@
             </ul>
 
             <div class="wallet-info" id="walletInfo">
-                <button id="connectWalletBtnNav" class="btn btn-primary nav-wallet-btn">
-                    Connect Wallet
-                </button>
+                <button id="connectWalletBtnNav" class="btn btn-primary nav-wallet-btn">Connect Wallet</button>
                 <span id="solBalanceNav" class="wallet-balance sol-balance" style="display: none;"></span>
                 <span id="yeahBalanceNav" class="wallet-balance yeah-balance" style="display: none;"></span>
                 <span id="walletAddressNav" class="wallet-address" style="display: none;"></span>
@@ -508,21 +413,18 @@
 </header>
 
 <main class="container">
-    <!-- HERO -->
     <section id="hero" class="center">
         <img src="https://i.imgur.com/LFWmlK1.png" alt="$YEAH Hero Image" class="hero-img" loading="lazy">
         <h1>$YEAH</h1>
         <p class="muted hero-description">Break the chains. Conviction. Culture. Movement on Solana.</p>
     </section>
 
-    <!-- Moving $YEAH Line -->
     <div class="marquee-container">
         <div class="marquee">
             <span>$YEAH</span><span>$YEAH</span><span>$YEAH</span><span>$YEAH</span><span>$YEAH</span><span>$YEAH</span><span>$YEAH</span><span>$YEAH</span><span>$YEAH</span><span>$YEAH</span><span>$YEAH</span><span>$YEAH</span><span>$YEAH</span><span>$YEAH</span><span>$YEAH</span><span>$YEAH</span><span>$YEAH</span><span>$YEAH</span><span>$YEAH</span><span>$YEAH</span>
         </div>
     </div>
 
-    <!-- WHY -->
     <section id="why">
         <h2>Why $YEAH?</h2>
         <div class="card center" style="max-width: 900px; margin: auto;">
@@ -533,7 +435,6 @@
         </div>
     </section>
 
-    <!-- TOKENOMICS -->
     <section id="tokenomics">
         <h2>Tokenomics</h2>
         <div class="grid tokenomics">
@@ -551,7 +452,6 @@
             </div>
         </div>
 
-        <!-- LIVE STATS -->
         <div style="margin-top: 3rem; text-align: center;">
             <h3 style="color: var(--gold);">Live Stats (updates every 60s)</h3>
             <div class="grid" style="max-width: 900px; margin: auto;">
@@ -576,7 +476,6 @@
     </section>
 </main>
 
-<!-- LIVE CHART -->
 <section class="center" style="padding: 60px 0; background: linear-gradient(to bottom, #000, #0a0a0a);">
     <h2>Live Chart</h2>
     <iframe 
@@ -586,7 +485,6 @@
     </iframe>
 </section>
 
-<!-- HOW TO BUY -->
 <section id="howtobuy" style="background: linear-gradient(180deg, #000, #0a0a0a 100%);">
     <div class="container center">
         <h2>How to Buy</h2>
@@ -636,7 +534,6 @@
     </div>
 </section>
 
-<!-- ROADMAP -->
 <section id="roadmap" class="container center">
     <h2>Roadmap</h2>
     <div>
@@ -647,17 +544,19 @@
     </div>
 </section>
 
-<!-- SECURITY -->
 <section id="security" style="background: #0a0a0a;">
     <div class="container center">
         <h2>Security & Transparency</h2>
         <div class="grid" style="max-width: 900px;">
             <div class="card center" style="background: linear-gradient(135deg, #111, #1a1a1a);">
-                <h3 style="color: var(--gold);">Fair Launch on Pump.fun</h3></div>
+                <h3 style="color: var(--gold);">Fair Launch on Pump.fun</h3>
+            </div>
             <div class="card center" style="background: linear-gradient(135deg, #111, #1a1a1a);">
-                <h3 style="color: var(--gold);">0% Tax</h3> </div>
+                <h3 style="color: var(--gold);">0% Tax</h3>
+            </div>
             <div class="card center" style="background: linear-gradient(135deg, #111, #1a1a1a);">
-                <h3 style="color: var(--gold);">Public Contract</h3> </div>
+                <h3 style="color: var(--gold);">Public Contract</h3>
+            </div>
             <div class="card center" style="background: linear-gradient(135deg, #111, #1a1a1a);">
                 <h3 style="color: var(--gold);">Tokens Burned</h3>
                 <p class="muted">Significant token burn for scarcity. View on Solscan: 
@@ -668,11 +567,10 @@
     </div>
 </section>
 
-<!-- FAQ -->
 <section id="faq" class="container">
     <h2 class="center">Frequently Asked Questions</h2>
     <div style="max-width: 900px; margin: auto;">
-        <div class="faq-item center" >
+        <div class="faq-item center">
             <strong class="faq-question">Is liquidity locked?</strong>
             <p class="muted">Liquidity is managed through Pump.fun's fair launch mechanism. Upon graduation to Raydium, it will be permanently locked.</p>
         </div>
@@ -695,7 +593,6 @@
     </div>
 </section>
 
-<!-- COMMUNITY -->
 <section id="community" class="container center" style="background: #0a0a0a;">
     <h2>Community Updates</h2>
     <div style="max-width: 800px; margin: auto;">
@@ -712,7 +609,6 @@
     </div>
 </section>
 
-<!-- DISCLAIMER -->
 <section style="background: #0a0a0a; padding: 60px 0; text-align: center;">
     <div class="container" style="max-width: 900px;">
         <h2 style="color: var(--accent);">Disclaimer</h2>
@@ -724,7 +620,6 @@
     </div>
 </section>
 
-<!-- CTA -->
 <section class="center cta-section">
     <div class="container">
         <h2>Join the $YEAH Movement</h2>
@@ -762,33 +657,26 @@
     </div>
 </footer>
 
-<!-- Scripts -->
 <script>
     const TOKEN_ADDRESS = '7wN4sxftxgoSzNorVSW3rQmRy7EjQDeWURfTSg3Gpump';
 
     async function updateLiveStats() {
         try {
-            // Dexscreener API
             const response = await fetch(`https://api.dexscreener.com/latest/dex/tokens/${TOKEN_ADDRESS}`);
             const data = await response.json();
 
             if (data.pairs && data.pairs.length > 0) {
                 const pair = data.pairs[0];
-
-                // Price
                 const price = pair.priceUsd ? `$${parseFloat(pair.priceUsd).toFixed(6)}` : 'N/A';
                 document.getElementById('price').innerText = price;
 
-                // Market Cap
                 const mc = pair.fdv ? `$${(pair.fdv / 1000000).toFixed(2)}M` : 'N/A';
                 document.getElementById('marketCap').innerText = mc;
 
-                // Liquidity
                 const liq = pair.liquidity?.usd ? `$${(pair.liquidity.usd / 1000).toFixed(1)}K` : 'N/A';
                 document.getElementById('liquidity').innerText = liq;
             }
 
-            // Holders using Rugcheck API
             try {
                 const rugResponse = await fetch(`https://api.rugcheck.xyz/v1/tokens/${TOKEN_ADDRESS}/report`);
                 const rugData = await rugResponse.json();
@@ -808,22 +696,17 @@
         }
     }
 
-    // Initial call
     updateLiveStats();
     setInterval(updateLiveStats, 60000);
 
-    // Copy Contract
     function copyContract(btn) {
         const text = document.getElementById('contractAddress').innerText;
         navigator.clipboard.writeText(text).then(() => {
             btn.innerText = 'Copied!';
-            setTimeout(() => {
-                btn.innerText = 'Copy Contract';
-            }, 2000);
+            setTimeout(() => btn.innerText = 'Copy Contract', 2000);
         }).catch(err => console.error('Failed to copy:', err));
     }
 
-    // Wallet connection code
     let connected = false;
     let publicKey = null;
 
@@ -933,7 +816,6 @@
         if (connected && publicKey) updateWalletBalances();
     }, 30000);
 
-    // Fade-in sections
     const sections = document.querySelectorAll('section');
     const observer = new IntersectionObserver(entries => {
         entries.forEach(entry => {
@@ -945,16 +827,14 @@
 
     sections.forEach(section => observer.observe(section));
 
-    // Mobile Menu
     const menuToggle = document.getElementById('menuToggle');
     const navMenu = document.getElementById('navMenu');
     menuToggle.addEventListener('click', () => {
         navMenu.classList.toggle('open');
     });
 
-    // Duplicate marquee content for seamless loop
     const marquee = document.querySelector('.marquee');
-    marquee.innerHTML += marquee.innerHTML; // Duplicate for infinite scroll
+    marquee.innerHTML += marquee.innerHTML;
 </script>
 </body>
 </html>
