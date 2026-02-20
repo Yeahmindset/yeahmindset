@@ -10,7 +10,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
 
-    <!-- CSS igual que antes -->
     <style>
         :root {
             --bg: #000;
@@ -36,33 +35,22 @@
             scroll-behavior: smooth;
         }
 
-        .container {
-            width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
 
-        h1, h2, h3 {
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 900;
-            letter-spacing: 0.5px;
-        }
+        h1, h2, h3 { font-family: 'Orbitron', sans-serif; font-weight: 900; letter-spacing: 0.5px; }
 
         h1 {
             font-size: clamp(3rem, 8vw, 5rem);
             background: linear-gradient(90deg, var(--gold), var(--accent));
-            background-clip: text;
             -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin: 1.5rem 0 0.8rem;
-            text-shadow: 0 0 20px rgba(255,20,147,0.2);
+            background-clip: text;
+            color: transparent;
             text-align: center;
+            text-shadow: 0 0 20px rgba(255,20,147,0.2);
         }
 
         h2 {
             font-size: clamp(2rem, 6vw, 3rem);
-            margin-bottom: 1.5rem;
             text-align: center;
             animation: glow 2s ease-in-out infinite alternate;
         }
@@ -73,8 +61,8 @@
         }
 
         .hero-img {
-            width: 100%;
             max-width: 800px;
+            width: 100%;
             border-radius: 16px;
             box-shadow: var(--shadow);
             margin: 1.5rem auto;
@@ -82,22 +70,11 @@
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
-        .hero-img:hover {
-            transform: scale(1.05) rotate(2deg);
-            box-shadow: var(--shadow-hover);
-        }
+        .hero-img:hover { transform: scale(1.05) rotate(2deg); box-shadow: var(--shadow-hover); }
 
-        section {
-            padding: 80px 0;
-            opacity: 0;
-            transform: translateY(50px);
-            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-        }
+        section { padding: 80px 0; opacity: 0; transform: translateY(50px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
 
-        section.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        section.visible { opacity: 1; transform: translateY(0); }
 
         .card {
             background: var(--card-bg);
@@ -115,11 +92,7 @@
             border-color: var(--accent-light);
         }
 
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-        }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; }
 
         .btn {
             display: inline-block;
@@ -129,9 +102,7 @@
             text-decoration: none;
             transition: all 0.3s ease;
             cursor: pointer;
-            border: none;
             text-align: center;
-            font-size: 1rem;
         }
 
         .btn-primary {
@@ -140,20 +111,11 @@
             box-shadow: 0 5px 15px rgba(255,20,147,0.3);
         }
 
-        .btn-primary:hover {
-            transform: translateY(-3px) scale(1.05);
-            box-shadow: 0 10px 25px rgba(255,20,147,0.4);
-        }
+        .btn-primary:hover { transform: translateY(-3px) scale(1.05); box-shadow: 0 10px 25px rgba(255,20,147,0.4); }
 
-        .btn-secondary {
-            background: var(--accent);
-            color: white;
-        }
+        .btn-secondary { background: var(--accent); color: white; }
 
-        .btn-secondary:hover {
-            background: var(--accent-light);
-            transform: scale(1.05);
-        }
+        .btn-secondary:hover { background: var(--accent-light); transform: scale(1.05); }
 
         .center { text-align: center; }
         .muted { color: var(--text-muted); }
@@ -163,11 +125,10 @@
             border-radius: 12px;
             margin-bottom: 1rem;
             transition: transform 0.3s ease;
+            cursor: pointer;
         }
 
-        .merch-item img:hover {
-            transform: scale(1.08);
-        }
+        .merch-item img:hover { transform: scale(1.08); }
 
         .coming-soon {
             font-size: 1.8rem;
@@ -176,6 +137,57 @@
             text-shadow: 0 0 15px var(--gold);
         }
 
+        #countdown {
+            font-size: 2.2rem;
+            margin: 2rem 0;
+            color: var(--accent);
+            font-weight: bold;
+            text-shadow: 0 0 15px var(--accent);
+        }
+
+        /* Lightbox */
+        .lightbox {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            left: 0; top: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.95);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .lightbox img {
+            max-width: 90%;
+            max-height: 90%;
+            border: 5px solid var(--accent);
+            box-shadow: 0 0 40px var(--accent);
+            border-radius: 12px;
+        }
+
+        /* Form */
+        #waitlistForm {
+            max-width: 500px;
+            margin: 2rem auto;
+            display: flex;
+        }
+
+        #waitlistForm input {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid var(--border);
+            background: #111;
+            color: white;
+            border-radius: 8px 0 0 8px;
+            font-size: 1rem;
+        }
+
+        #waitlistForm button {
+            border-radius: 0 8px 8px 0;
+            padding: 12px 24px;
+        }
+
+        /* Navbar y marquee (sin cambios) */
         nav {
             position: fixed;
             top: 0;
@@ -185,52 +197,22 @@
             backdrop-filter: blur(12px);
             z-index: 1000;
             padding: 1rem 0;
-            transition: background 0.3s ease;
         }
 
-        nav .container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+        nav .container { display: flex; justify-content: space-between; align-items: center; }
 
-        nav ul {
-            display: flex;
-            list-style: none;
-            gap: 2rem;
-        }
+        nav ul { display: flex; list-style: none; gap: 2rem; }
 
-        nav a {
-            color: var(--text);
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.3s, transform 0.3s;
-        }
+        nav a { color: var(--text); text-decoration: none; font-weight: 500; transition: color 0.3s, transform 0.3s; }
 
-        nav a:hover {
-            color: var(--accent);
-            transform: translateY(-2px);
-        }
+        nav a:hover { color: var(--accent); transform: translateY(-2px); }
 
-        .menu-toggle {
-            display: none;
-            cursor: pointer;
-            font-size: 1.5rem;
-        }
+        .menu-toggle { display: none; cursor: pointer; font-size: 1.5rem; }
 
         @media (max-width: 768px) {
             nav ul { display: none; }
             .menu-toggle { display: block; }
-            nav ul.open {
-                display: flex;
-                flex-direction: column;
-                position: absolute;
-                top: 100%;
-                left: 0;
-                width: 100%;
-                background: rgba(0,0,0,0.9);
-                padding: 1rem;
-            }
+            nav ul.open { display: flex; flex-direction: column; position: absolute; top: 100%; left: 0; width: 100%; background: rgba(0,0,0,0.9); padding: 1rem; }
         }
 
         .marquee-container {
@@ -242,24 +224,11 @@
             box-shadow: var(--shadow);
         }
 
-        .marquee {
-            display: flex;
-            white-space: nowrap;
-            animation: marquee 20s linear infinite;
-        }
+        .marquee { display: flex; white-space: nowrap; animation: marquee 20s linear infinite; }
 
-        .marquee span {
-            font-size: 2rem;
-            font-weight: bold;
-            color: #000;
-            padding: 0 20px;
-            text-transform: uppercase;
-        }
+        .marquee span { font-size: 2rem; font-weight: bold; color: #000; padding: 0 20px; text-transform: uppercase; }
 
-        @keyframes marquee {
-            from { transform: translateX(0); }
-            to   { transform: translateX(-50%); }
-        }
+        @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
     </style>
 </head>
 <body>
@@ -268,9 +237,7 @@
     <nav>
         <div class="container">
             <a href="index.html"><img src="https://i.imgur.com/LFWmlK1.png" alt="$YEAH Logo" style="height: 40px;"></a>
-            
             <div class="menu-toggle" id="menuToggle">☰</div>
-            
             <ul id="navMenu">
                 <li><a href="index.html">Home</a></li>
                 <li><a href="index.html#why">Why $YEAH</a></li>
@@ -280,7 +247,6 @@
                 <li><a href="merch.html">Merch</a></li>
                 <li><a href="index.html#community">Community</a></li>
             </ul>
-
             <div class="wallet-info">
                 <button class="btn btn-primary nav-wallet-btn">Connect Wallet</button>
             </div>
@@ -304,58 +270,82 @@
 
     <section id="products">
         <h2>Merch Drop</h2>
+        <div id="countdown" class="center">Merch Drop en: <span id="timer">Cargando...</span></div>
         <p class="center coming-soon">PHASE 2 — MOMENTUM<br>Merch launch incoming Q2 2026</p>
 
         <div class="grid">
-            <!-- Card 1: Conviction Tee -->
             <div class="card merch-item">
-                <img src="https://i.postimg.cc/65V1xKfJ/blood-sweat-yeah.jpg" alt="$YEAH Conviction Tee" onerror="this.src='https://i.imgur.com/LFWmlK1.png'">
+                <img src="https://i.postimg.cc/65V1xKfJ/blood-sweat-yeah.jpg" alt="$YEAH Conviction Tee">
                 <h3>Blood Sweat $yeah - T-shirt</h3>
-                <p class="muted">.......</p>
-                <p style="font-weight: bold; color: var(--gold);">Coming Soon </p>
+                <p class="muted">descripcion</p>
+                <p style="font-weight: bold; color: var(--gold);">Coming Soon  </p>
             </div>
 
-            <!-- Card 2: Mindset Hoodie -->
             <div class="card merch-item">
-                <img src="https://i.postimg.cc/htSZSY2W/break-the-chains-t-shirt.jpg" alt="$YEAH Mindset Hoodie" onerror="this.src='https://i.imgur.com/LFWmlK1.png'">
+                <img src="https://i.postimg.cc/htSZSY2W/break-the-chains-t-shirt.jpg" alt="$YEAH Mindset Hoodie">
                 <h3>Break the Chains - T-shirt</h3>
-                <p class="muted">Descripcion del producto</p>
+                <p class="muted">Yeah</p>
                 <p style="font-weight: bold; color: var(--gold);">Coming Soon </p>
             </div>
 
-            <!-- Card 3: Yeah Cap -->
             <div class="card merch-item">
-                <img src="https://i.postimg.cc/cLskszFq/breakthechainshood.jpg" alt="$YEAH Cap" onerror="this.src='https://i.imgur.com/LFWmlK1.png'">
+                <img src="https://i.postimg.cc/cLskszFq/breakthechainshood.jpg" alt="$YEAH Cap">
                 <h3>Break the Chains - Hoodie</h3>
-                <p class="muted">Black snap</p>
+                <p class="muted">Yeah</p>
                 <p style="font-weight: bold; color: var(--gold);">Coming Soon </p>
             </div>
 
-            <!-- Card 4: Sticker Pack -->
             <div class="card merch-item">
-                <img src="https://i.postimg.cc/L8HQHWNc/yeah-hooded-sweatshirt.jpg" alt="$YEAH Sticker Pack" onerror="this.src='https://i.imgur.com/LFWmlK1.png'">
-                <h3>Yeah - Hooded Sweatshirt</h3>
-                <p class="muted">10+ degen designs • Waterproof vinyl • Laptop, phone & water bottle ready</p>
+                <img src="https://i.postimg.cc/L8HQHWNc/yeah-hooded-sweatshirt.jpg" alt="$YEAH Sticker Pack">
+                <h3>Yeah - Hooded sweatshirt</h3>
+                <p class="muted">Yeah</p>
                 <p style="font-weight: bold; color: var(--gold);">Coming Soon </p>
             </div>
 
-            <!-- Card 5: Break the Chains Long Sleeve -->
             <div class="card merch-item">
-                <img src="https://i.postimg.cc/htSZSYpH/yeah-t-shirt.jpg" alt="$YEAH Long Sleeve" onerror="this.src='https://i.imgur.com/LFWmlK1.png'">
+                <img src="https://i.postimg.cc/htSZSYpH/yeah-t-shirt.jpg" alt="$YEAH Long Sleeve">
                 <h3>Yeah - T-shirt</h3>
-                <p class="muted">Black t</p>
+                <p class="muted">Yeah print</p>
                 <p style="font-weight: bold; color: var(--gold);">Coming Soon </p>
             </div>
         </div>
     </section>
 
-    <section class="center" style="padding: 80px 0;">
+    <section class="center" style="padding: 80px 0; background: linear-gradient(180deg, #000, #111);">
         <h2>Join the Waitlist</h2>
-        <p class="muted" style="font-size: 1.3rem; margin-bottom: 2rem;">Be the first to know when drops go live. Follow for updates.</p>
-        <a href="https://x.com/Yeah_mindset" target="_blank" class="btn btn-primary" style="font-size: 1.4rem; padding: 16px 60px;">Follow @Yeah_mindset</a>
+        <p class="muted" style="font-size: 1.3rem; margin-bottom: 1.5rem;">Be the first to know when drops go live. Enter your email for exclusive updates & possible early access.</p>
+        
+        <form id="waitlistForm">
+            <input type="email" placeholder="tuemail@ejemplo.com" required>
+            <button type="submit" class="btn btn-primary">Notify Me</button>
+        </form>
+        <p id="formMessage" class="muted" style="margin-top: 1rem; min-height: 1.5rem;"></p>
+
+        <p style="margin-top: 2rem;">
+            <a href="https://x.com/Yeah_mindset" target="_blank" class="btn btn-secondary" style="margin: 0.5rem;">Follow @Yeah_mindset</a>
+        </p>
+    </section>
+
+    <section id="contact" class="center" style="padding: 80px 0; background: linear-gradient(180deg, #111, #000);">
+        <div class="container">
+            <h2>Send Your Suggestions</h2>
+            <p class="muted" style="font-size: 1.3rem; max-width: 800px; margin: 0 auto 2rem;">
+                Got ideas for new merch designs? Want a custom $YEAH print? Or feedback on what we should drop next? 
+                Hit us up! We're building this with the community.
+            </p>
+            <p style="font-size: 1.6rem; font-weight: bold; color: var(--gold); margin-bottom: 1rem;">
+                Email: <a href="mailto:yeahmindset@gmail.com" style="color: var(--accent); text-decoration: underline;">yeahmindset@gmail.com</a>
+            </p>
+            <p class="muted">Attach mockups, ideas or just vibe-check us. Let's make $YEAH merch legendary together 🔥</p>
+        </div>
     </section>
 
 </main>
+
+<!-- Lightbox -->
+<div id="lightbox" class="lightbox">
+    <img id="lightboxImg" src="" alt="Enlarged merch">
+</div>
 
 <footer class="center" style="background: #0a0a0a; padding: 3rem 0; border-top: 1px solid var(--border);">
     <div class="container">
@@ -380,25 +370,49 @@
     sections.forEach(section => observer.observe(section));
 
     // Mobile menu
-    const menuToggle = document.getElementById('menuToggle');
-    const navMenu = document.getElementById('navMenu');
-    menuToggle.addEventListener('click', () => {
-        navMenu.classList.toggle('open');
+    document.getElementById('menuToggle').addEventListener('click', () => {
+        document.getElementById('navMenu').classList.toggle('open');
     });
 
-    // Marquee infinite loop
+    // Marquee loop
     const marquee = document.querySelector('.marquee');
     if (marquee) marquee.innerHTML += marquee.innerHTML;
+
+    // Countdown
+    const launchDate = new Date("2026-05-15T00:00:00").getTime();
+    const countdown = setInterval(() => {
+        const now = new Date().getTime();
+        const distance = launchDate - now;
+        if (distance < 0) {
+            document.getElementById("timer").innerHTML = "¡Lanzado! 🔥";
+            clearInterval(countdown);
+            return;
+        }
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        document.getElementById("timer").innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+    }, 1000);
+
+    // Lightbox
+    document.querySelectorAll('.merch-item img').forEach(img => {
+        img.addEventListener('click', () => {
+            document.getElementById('lightboxImg').src = img.src;
+            document.getElementById('lightbox').style.display = 'flex';
+        });
+    });
+    document.getElementById('lightbox').addEventListener('click', function(e) {
+        if (e.target === this) this.style.display = 'none';
+    });
+
+    // Waitlist form (fake success for now)
+    document.getElementById('waitlistForm').addEventListener('submit', e => {
+        e.preventDefault();
+        document.getElementById('formMessage').innerHTML = "¡Estás en la lista! Te avisamos cuando dropee 🔥";
+        document.getElementById('formMessage').style.color = 'var(--gold)';
+        // Aquí podrías conectar a un backend real (Formspree, Telegram, etc.)
+    });
 </script>
 </body>
 </html>
-
-
-
-<!-- Card 3: Yeah Cap 
-https://i.postimg.cc/65V1xKfJ/blood-sweat-yeah.jpg
-https://i.postimg.cc/htSZSY2W/break-the-chains-t-shirt.jpg
-https://i.postimg.cc/cLskszFq/breakthechainshood.jpg
-https://i.postimg.cc/L8HQHWNc/yeah-hooded-sweatshirt.jpg
-https://i.postimg.cc/htSZSYpH/yeah-t-shirt.jpg
--->
