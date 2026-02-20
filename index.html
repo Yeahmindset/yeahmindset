@@ -10,26 +10,26 @@
     <meta property="og:title" content="$YEAH - Break the Chains">
     <meta property="og:description" content="Conviction. Culture. Movement on Solana. Join the $YEAH revolution.">
     <meta property="og:image" content="https://i.imgur.com/LFWmlK1.png">
-    <meta property="og:url" content="https://yourwebsite.com"> <!-- Replace with actual URL -->
+    <meta property="og:url" content="https://yeahmindset.com">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:site" content="@Yeah_mindset">
-    <title>$YEAH - Break the Chains</title>
-    <link rel="icon" href="https://i.imgur.com/LFWmlK1.png" type="image/png"> <!-- Favicon -->
+    <title>$YEAH - The Conviction Meme Token on Solana</title>
+    <link rel="icon" href="https://i.imgur.com/LFWmlK1.png" type="image/png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg: #000;
-            --card-bg: #0d0d0d;
+            --card-bg: #1a1a1a;
             --accent: #ff1493;
             --accent-light: #ff4db8;
-            --gold: #ffd400;
+            --gold: #ffd700;
             --text: #ffffff;
-            --text-muted: rgba(255,255,255,0.7);
-            --border: rgba(255,255,255,0.08);
-            --shadow: 0 20px 60px rgba(255,20,147,0.25);
-            --shadow-hover: 0 20px 50px rgba(255,20,147,0.35);
+            --text-muted: rgba(255,255,255,0.8);
+            --border: rgba(255,255,255,0.1);
+            --shadow: 0 10px 30px rgba(0,0,0,0.5);
+            --shadow-hover: 0 15px 40px rgba(255,20,147,0.2);
         }
 
         * {
@@ -49,52 +49,63 @@
 
         .container {
             width: 100%;
-            max-width: 1280px;
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 0 24px;
+            padding: 0 20px;
         }
 
         h1, h2, h3 {
             font-family: 'Orbitron', sans-serif;
             font-weight: 900;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
         }
 
         h1 {
-            font-size: clamp(2.5rem, 10vw, 9rem);
+            font-size: clamp(3rem, 8vw, 5rem);
             background: linear-gradient(90deg, var(--gold), var(--accent));
             background-clip: text;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             margin: 1.5rem 0 0.8rem;
-            text-shadow: 0 0 40px rgba(255,20,147,0.3);
+            text-shadow: 0 0 20px rgba(255,20,147,0.2);
             text-align: center;
         }
 
         h2 {
-            font-size: clamp(1.8rem, 8vw, 4rem);
+            font-size: clamp(2rem, 6vw, 3rem);
             margin-bottom: 1.5rem;
             text-align: center;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 10px var(--accent), 0 0 20px var(--accent-light);
+            }
+            to {
+                text-shadow: 0 0 20px var(--accent), 0 0 30px var(--accent-light);
+            }
         }
 
         .hero-img {
             width: 100%;
-            max-width: 960px;
-            border-radius: 24px;
+            max-width: 800px;
+            border-radius: 16px;
             box-shadow: var(--shadow);
             margin: 1.5rem auto;
             display: block;
-            transition: transform 0.3s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
         .hero-img:hover {
-            transform: scale(1.02);
+            transform: scale(1.05) rotate(2deg);
+            box-shadow: var(--shadow-hover);
         }
 
         section {
-            padding: 60px 0;
+            padding: 80px 0;
             opacity: 0;
-            transform: translateY(30px);
+            transform: translateY(50px);
             transition: opacity 0.8s ease-out, transform 0.8s ease-out;
         }
 
@@ -106,53 +117,52 @@
         .card {
             background: var(--card-bg);
             border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 1.8rem;
+            border-radius: 16px;
+            padding: 2rem;
             transition: all 0.4s ease;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            box-shadow: var(--shadow);
         }
 
         .card:hover {
-            transform: translateY(-12px);
+            transform: translateY(-10px) rotate(1deg);
             box-shadow: var(--shadow-hover);
+            border-color: var(--accent-light);
         }
 
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 1.5rem;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
         }
 
         .tokenomics h3 {
             color: var(--accent);
-            font-size: clamp(1.2rem, 4vw, 1.6rem);
+            font-size: 1.4rem;
             margin-bottom: 0.8rem;
         }
 
         .btn {
             display: inline-block;
-            padding: 12px 28px;
-            border-radius: 12px;
-            font-weight: 700;
+            padding: 12px 32px;
+            border-radius: 8px;
+            font-weight: 600;
             text-decoration: none;
             transition: all 0.3s ease;
             cursor: pointer;
             border: none;
             text-align: center;
-            min-height: 48px; /* Touch-friendly */
-            font-size: clamp(0.95rem, 3.5vw, 1.1rem);
+            font-size: 1rem;
         }
 
         .btn-primary {
             background: linear-gradient(90deg, var(--gold), var(--accent));
             color: #000;
-            box-shadow: 0 10px 30px rgba(255,20,147,0.4);
+            box-shadow: 0 5px 15px rgba(255,20,147,0.3);
         }
 
         .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 40px rgba(255,20,147,0.5);
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 10px 25px rgba(255,20,147,0.4);
         }
 
         .btn-secondary {
@@ -162,6 +172,7 @@
 
         .btn-secondary:hover {
             background: var(--accent-light);
+            transform: scale(1.05);
         }
 
         .btn-copy {
@@ -179,7 +190,7 @@
             padding: 14px 20px;
             border-radius: 12px;
             font-family: monospace;
-            font-size: clamp(0.85rem, 3vw, 1rem);
+            font-size: 0.9rem;
             word-break: break-all;
             margin: 0.8rem 0;
             border: 1px solid var(--border);
@@ -191,51 +202,57 @@
 
         .muted {
             color: var(--text-muted);
-            font-size: clamp(0.95rem, 3.5vw, 1.1rem);
+            font-size: 1rem;
         }
 
         .hero-description {
-            font-size: clamp(1.2rem, 5vw, 1.6rem);
+            font-size: 1.4rem;
             margin-top: 1rem;
         }
 
         .why-description {
-            font-size: clamp(1rem, 4vw, 1.3rem);
+            font-size: 1.2rem;
             line-height: 1.8;
         }
 
         .how-to-description {
-            font-size: clamp(1.1rem, 4.5vw, 1.4rem);
+            font-size: 1.3rem;
             margin-bottom: 2.5rem;
         }
 
         .step-img {
             max-width: 100%;
-            max-height: 160px;
+            max-height: 180px;
             margin: 1rem auto;
             display: block;
-            border-radius: 16px;
-            transition: transform 0.3s ease;
+            border-radius: 12px;
+            transition: transform 0.3s ease, filter 0.3s ease;
         }
 
         .step-img:hover {
             transform: scale(1.05);
+            filter: brightness(1.1);
         }
 
         .phase {
             margin: 1.5rem 0;
-            font-size: clamp(1rem, 4vw, 1.2rem);
-            padding: 1.2rem;
+            font-size: 1.1rem;
+            padding: 1.5rem;
             background: var(--card-bg);
-            border-radius: 16px;
+            border-radius: 12px;
             border: 1px solid var(--border);
+            transition: background 0.3s ease;
+        }
+
+        .phase:hover {
+            background: #222;
         }
 
         .phase strong {
             color: var(--accent);
             display: block;
             margin-bottom: 0.6rem;
-            font-size: clamp(1.1rem, 4.5vw, 1.4rem);
+            font-size: 1.3rem;
         }
 
         .faq-item {
@@ -247,11 +264,16 @@
             display: block;
             margin-bottom: 0.6rem;
             font-weight: 600;
-            font-size: clamp(1rem, 4vw, 1.2rem);
+            font-size: 1.1rem;
+            transition: color 0.3s ease;
+        }
+
+        .faq-question:hover {
+            color: var(--accent-light);
         }
 
         .cta-section {
-            padding: 60px 0;
+            padding: 80px 0;
             background: linear-gradient(180deg, #000, #111);
         }
 
@@ -260,7 +282,7 @@
         }
 
         .cta-btn-large {
-            font-size: clamp(1.4rem, 5.5vw, 1.8rem);
+            font-size: 1.6rem;
             padding: 18px 50px;
         }
 
@@ -269,19 +291,6 @@
             border-top: 1px solid var(--border);
             padding: 3rem 0 2rem;
             position: relative;
-            overflow: hidden;
-        }
-
-        footer .glow {
-            position: absolute;
-            top: -100px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 600px;
-            height: 300px;
-            background: radial-gradient(circle, rgba(255,20,147,0.2) 0%, transparent 70%);
-            filter: blur(100px);
-            pointer-events: none;
         }
 
         .footer-top {
@@ -291,13 +300,13 @@
             gap: 1rem;
             flex-wrap: wrap;
             margin-bottom: 1.5rem;
-            font-size: clamp(0.9rem, 3.2vw, 1.1rem);
-            opacity: 0.8;
+            font-size: 1rem;
+            opacity: 0.9;
         }
 
         .footer-solana {
             margin: 1.5rem 0;
-            font-size: clamp(0.9rem, 3.2vw, 1.1rem);
+            font-size: 1rem;
         }
 
         .solana-badge {
@@ -311,7 +320,7 @@
         .social {
             display: flex;
             justify-content: center;
-            gap: 1rem;
+            gap: 1.5rem;
         }
 
         .social a {
@@ -319,11 +328,11 @@
         }
 
         .social a:hover {
-            transform: scale(1.2);
+            transform: scale(1.15) rotate(5deg);
         }
 
         .social img {
-            height: clamp(24px, 8vw, 32px);
+            height: 28px;
         }
 
         /* Navbar */
@@ -332,10 +341,15 @@
             top: 0;
             left: 0;
             width: 100%;
-            background: rgba(0,0,0,0.8);
-            backdrop-filter: blur(10px);
+            background: rgba(0,0,0,0.9);
+            backdrop-filter: blur(12px);
             z-index: 1000;
-            padding: 0.8rem 0;
+            padding: 1rem 0;
+            transition: background 0.3s ease;
+        }
+
+        nav:hover {
+            background: rgba(0,0,0,1);
         }
 
         nav .container {
@@ -345,192 +359,176 @@
         }
 
         nav ul {
-            display: none; /* Hidden by default on mobile */
-            flex-direction: column;
-            list-style: none;
-            gap: 1rem;
-            position: absolute;
-            top: 100%;
-            left: 0;
-            width: 100%;
-            background: rgba(0,0,0,0.9);
-            padding: 1rem;
-        }
-
-        nav ul.open {
             display: flex;
+            list-style: none;
+            gap: 2rem;
         }
 
         nav a {
             color: var(--text);
             text-decoration: none;
-            font-weight: 600;
-            transition: color 0.3s;
-            font-size: clamp(0.95rem, 4vw, 1.1rem);
+            font-weight: 500;
+            transition: color 0.3s, transform 0.3s;
+            font-size: 1rem;
         }
 
         nav a:hover {
             color: var(--accent);
+            transform: translateY(-2px);
         }
 
         .menu-toggle {
-            display: block;
+            display: none;
             cursor: pointer;
-            font-size: 1.8rem;
-            color: var(--text);
-        }
-
-        @media (min-width: 769px) {
-            .menu-toggle {
-                display: none;
-            }
-            nav ul {
-                display: flex;
-                flex-direction: row;
-                position: static;
-                width: auto;
-                background: none;
-                padding: 0;
-                gap: 2rem;
-            }
+            font-size: 1.5rem;
         }
 
         @media (max-width: 768px) {
-            section { padding: 60px 0; }
-            h1 { font-size: clamp(2.5rem, 10vw, 4.5rem); }
-            .container { padding: 0 16px; }
-            .grid { grid-template-columns: 1fr; gap: 1.2rem; }
-            .footer-top { flex-direction: column; gap: 1rem; }
-            .card { padding: 1.5rem; }
-            .btn { padding: 10px 24px; }
-            .step-img { max-height: 140px; }
-            iframe { height: 500px; }
-            .twitter-timeline { height: 400px !important; }
+            nav ul {
+                display: none;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            nav ul.open {
+                display: flex;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: rgba(0,0,0,0.9);
+                padding: 1rem;
+                gap: 1rem;
+            }
         }
 
-        @media (max-width: 480px) {
-            .container { padding: 0 12px; }
-            h2 { margin-bottom: 1rem; }
-            .btn { width: 100%; margin: 0.5rem 0; }
-            .social { gap: 0.8rem; }
-        }
         .wallet-info {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
             flex-wrap: wrap;
         }
 
-        .wallet-balance,
-        .wallet-address {
+        .wallet-balance, .wallet-address {
             font-size: 0.9rem;
-            font-weight: 600;
             padding: 6px 12px;
-            border-radius: 12px;
-            background: rgba(255,255,255,0.08);
+            border-radius: 8px;
+            background: rgba(255,255,255,0.1);
             border: 1px solid var(--border);
-            white-space: nowrap;
         }
 
         .sol-balance {
             color: var(--gold);
-            background: rgba(255,212,0,0.1);
-            border-color: var(--gold);
         }
 
         .yeah-balance {
             color: var(--accent);
-            background: rgba(255,20,147,0.1);
-            border-color: var(--accent);
         }
 
         .wallet-address {
             font-family: monospace;
-            font-size: 0.85rem;
             color: var(--text-muted);
         }
 
         .nav-wallet-btn {
             padding: 8px 16px;
             font-size: 0.95rem;
-            min-height: 40px;
         }
 
-        /* Mobile */
-        @media (max-width: 768px) {
-            .wallet-info {
-                gap: 6px;
+        /* Moving $YEAH line */
+        .marquee-container {
+            overflow: hidden;
+            background: linear-gradient(90deg, var(--accent), var(--accent-light));
+            padding: 10px 0;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+        }
+
+        .marquee {
+            display: flex;
+            white-space: nowrap;
+            animation: marquee 20s linear infinite;
+        }
+
+        .marquee span {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #000;
+            padding: 0 20px;
+            text-transform: uppercase;
+        }
+
+        @keyframes marquee {
+            from {
+                transform: translateX(0);
             }
-            .wallet-balance,
-            .wallet-address {
-                font-size: 0.8rem;
-                padding: 5px 10px;
-            }
-            .nav-wallet-btn {
-                padding: 6px 12px;
-                font-size: 0.85rem;
-            }
-            .wallet-address {
-                display: none !important; /* Oculta address en móvil */
-            }
-            .yeah-balance {
-                display: inline-block; /* Mantener visible en móvil, ajustado */
+            to {
+                transform: translateX(-50%);
             }
         }
     </style>
-    <!-- Solana Web3.js for wallet balance -->
     <script src="https://cdn.jsdelivr.net/npm/@solana/web3.js@latest/lib/index.iife.js"></script>
 </head>
 <body>
 
-<!-- Navbar -->
-<nav>
-    <div class="container">
-        <a href="#"><img src="https://i.imgur.com/LFWmlK1.png" alt="Logo" style="height: 40px;"></a>
-        
-        <div class="menu-toggle" id="menuToggle">&#9776;</div>
-        
-        <ul id="navMenu">
-            <li><a href="#hero">Home</a></li>
-            <li><a href="#why">Why $YEAH</a></li>
-            <li><a href="#tokenomics">Tokenomics</a></li>
-            <li><a href="#howtobuy">How to Buy</a></li>
-            <li><a href="#roadmap">Roadmap</a></li>
-            <li><a href="#security">Security</a></li>
-            <li><a href="#faq">FAQ</a></li>
-            <li><a href="#community">Community</a></li>
-            <li><a href="merch.html">Merch</a></li>
-        </ul>
+<header>
+    <!-- Navbar -->
+    <nav>
+        <div class="container">
+            <a href="#"><img src="https://i.imgur.com/LFWmlK1.png" alt="$YEAH Logo" style="height: 40px;"></a>
+            
+            <div class="menu-toggle" id="menuToggle">&#9776;</div>
+            
+            <ul id="navMenu">
+                <li><a href="#hero">Home</a></li>
+                <li><a href="#why">Why $YEAH</a></li>
+                <li><a href="#tokenomics">Tokenomics</a></li>
+                <li><a href="#howtobuy">How to Buy</a></li>
+                <li><a href="#roadmap">Roadmap</a></li>
+                <li><a href="#security">Security</a></li>
+                <li><a href="#faq">FAQ</a></li>
+                <li><a href="#community">Community</a></li>
+                <li><a href="merch.html">Merch</a></li>
+            </ul>
 
-        <!-- Wallet info en navbar -->
-        <div class="wallet-info" id="walletInfo">
-            <button id="connectWalletBtnNav" class="btn btn-primary nav-wallet-btn">
-                Connect Wallet
-            </button>
-            <span id="solBalanceNav" class="wallet-balance sol-balance" style="display: none;"></span>
-            <span id="yeahBalanceNav" class="wallet-balance yeah-balance" style="display: none;"></span>
-            <span id="walletAddressNav" class="wallet-address" style="display: none;"></span>
+            <div class="wallet-info" id="walletInfo">
+                <button id="connectWalletBtnNav" class="btn btn-primary nav-wallet-btn">
+                    Connect Wallet
+                </button>
+                <span id="solBalanceNav" class="wallet-balance sol-balance" style="display: none;"></span>
+                <span id="yeahBalanceNav" class="wallet-balance yeah-balance" style="display: none;"></span>
+                <span id="walletAddressNav" class="wallet-address" style="display: none;"></span>
+            </div>
         </div>
-    </div>
-</nav>
+    </nav>
+</header>
 
-<div class="container">
+<main class="container">
     <!-- HERO -->
     <section id="hero" class="center">
-        <img src="https://i.imgur.com/LFWmlK1.png" alt="$YEAH Hero" class="hero-img" loading="lazy">
+        <img src="https://i.imgur.com/LFWmlK1.png" alt="$YEAH Hero Image" class="hero-img" loading="lazy">
         <h1>$YEAH</h1>
-        <p class="muted hero-description">Break the chains. Conviction. Culture. Movement.</p>
+        <p class="muted hero-description">Break the chains. Conviction. Culture. Movement on Solana.</p>
     </section>
+
+    <!-- Moving $YEAH Line -->
+    <div class="marquee-container">
+        <div class="marquee">
+            <span>$YEAH</span><span>$YEAH</span><span>$YEAH</span><span>$YEAH</span><span>$YEAH</span><span>$YEAH</span><span>$YEAH</span><span>$YEAH</span><span>$YEAH</span><span>$YEAH</span><span>$YEAH</span><span>$YEAH</span><span>$YEAH</span><span>$YEAH</span><span>$YEAH</span><span>$YEAH</span><span>$YEAH</span><span>$YEAH</span><span>$YEAH</span><span>$YEAH</span>
+        </div>
+    </div>
 
     <!-- WHY -->
     <section id="why">
         <h2>Why $YEAH?</h2>
         <div class="card center" style="max-width: 900px; margin: auto;">
             <p class="why-description">
-                $YEAH is not hype.
-                It’s conviction. It’s culture. It’s movement.
-                <strong style="color: var(--accent);">Break limits. Build mindset.</strong>
-                Join a community focused on long-term growth and positive impact in the Solana ecosystem.
+                $YEAH is more than a token—it's a mindset. Built on conviction and community, $YEAH represents a cultural movement on Solana. With no hype, just real growth, we focus on long-term value, transparency, and positive impact in the crypto ecosystem.
+                <strong style="color: var(--accent);">Join us to build a stronger, more resilient community.</strong>
             </p>
         </div>
     </section>
@@ -576,7 +574,7 @@
             </div>
         </div>
     </section>
-</div>
+</main>
 
 <!-- LIVE CHART -->
 <section class="center" style="padding: 60px 0; background: linear-gradient(to bottom, #000, #0a0a0a);">
@@ -589,50 +587,49 @@
 </section>
 
 <!-- HOW TO BUY -->
-<section id="howtobuy" style="background: linear-gradient(180deg, #000 0%, #0a0a0a 100%);">
+<section id="howtobuy" style="background: linear-gradient(180deg, #000, #0a0a0a 100%);">
     <div class="container center">
-        <h2> HOW TO BUY</h2>
-        <p class="muted how-to-description">Get $YEAH in 4 simple steps using Phantom Wallet or any Solana-compatible wallet.</p>
+        <h2>How to Buy</h2>
+        <p class="muted how-to-description">Acquire $YEAH in four straightforward steps using Phantom Wallet or any Solana-compatible wallet.</p>
         <div class="grid">
             <div class="card">
-                <h3>Step  Install Phantom</h3>
-                <p class="muted">Download <strong>Phantom Wallet</strong> for Chrome, iOS, or Android.</p>
-                <img src="https://i.imgur.com/pGkQmxv.png" alt="Phantom" class="step-img" loading="lazy">
+                <h3>Step 1: Install Phantom</h3>
+                <p class="muted">Download Phantom Wallet for Chrome, iOS, or Android.</p>
+                <img src="https://i.imgur.com/pGkQmxv.png" alt="Phantom Wallet Installation" class="step-img" loading="lazy">
                 <a href="https://phantom.app/" target="_blank" class="btn btn-secondary">Get Phantom</a>
             </div>
             <div class="card">
-                <h3>Step  Buy SOL</h3>
-                <p class="muted">Purchase SOL inside Phantom or send SOL to your wallet.</p>
-                <img src="https://i.imgur.com/5AcmfL9.png" alt="SOL" class="step-img" loading="lazy">
+                <h3>Step 2: Acquire SOL</h3>
+                <p class="muted">Purchase SOL within Phantom or transfer SOL to your wallet.</p>
+                <img src="https://i.imgur.com/5AcmfL9.png" alt="Acquire SOL" class="step-img" loading="lazy">
             </div>
             <div class="card">
-                <h3>Step  Go to Pump.fun</h3>
-                <p class="muted">Open Pump.fun and connect your Phantom wallet.</p>
-                <img src="https://i.imgur.com/Nu28tcC.jpeg" alt="Pump.fun" class="step-img" loading="lazy">
+                <h3>Step 3: Visit Pump.fun</h3>
+                <p class="muted">Navigate to Pump.fun and connect your wallet.</p>
+                <img src="https://i.imgur.com/Nu28tcC.jpeg" alt="Pump.fun Platform" class="step-img" loading="lazy">
                 <a href="https://pump.fun/7wN4sxftxgoSzNorVSW3rQmRy7EjQDeWURfTSg3Gpump" target="_blank" class="btn btn-primary">Open Pump.fun</a>
             </div>
             <div class="card">
-                <h3>Step  Swap for $YEAH</h3>
-                <p class="muted">Paste the contract address, choose amount, and swap.</p>
-                <img src="https://i.imgur.com/0LUT1dg.png" alt="Swap" class="step-img" loading="lazy">
+                <h3>Step 4: Swap for $YEAH</h3>
+                <p class="muted">Enter the contract address, select the amount, and execute the swap.</p>
+                <img src="https://i.imgur.com/0LUT1dg.png" alt="Swap for $YEAH" class="step-img" loading="lazy">
             </div>
         </div>
 
         <div style="margin-top: 3rem;">
-            <p class="muted" style="font-size: 1rem; margin-bottom: 0.8rem;">Official Contract:</p>
+            <p class="muted" style="font-size: 1rem; margin-bottom: 0.8rem;">Official Contract Address:</p>
             <div class="contract" id="contractAddress">7wN4sxftxgoSzNorVSW3rQmRy7EjQDeWURfTSg3Gpump</div>
             <button class="btn btn-copy" onclick="copyContract(this)">Copy Contract</button>
         </div>
 
-        <!-- Connect Wallet Button with Balance Display -->
         <div style="margin-top: 3rem; text-align: center;">
-            <button id="connectWalletBtn" class="btn btn-primary" style="font-size: clamp(1.2rem, 5vw, 1.6rem); padding: 14px 50px;">
+            <button id="connectWalletBtn" class="btn btn-primary" style="font-size: 1.4rem; padding: 14px 50px;">
                 Connect Phantom Wallet
             </button>
-            <p id="walletStatus" class="muted" style="margin-top: 1rem; font-size: clamp(0.9rem, 3.5vw, 1.1rem);">
-                Connect your wallet to view balance, prepare for swaps or future airdrops.
+            <p id="walletStatus" class="muted" style="margin-top: 1rem; font-size: 1rem;">
+                Connect your wallet to view balance and prepare for transactions.
             </p>
-            <p id="tokenBalance" class="muted" style="margin-top: 0.8rem; font-size: clamp(1rem, 4vw, 1.2rem); display: none;">
+            <p id="tokenBalance" class="muted" style="margin-top: 0.8rem; font-size: 1.1rem; display: none;">
                 $YEAH Balance: Loading...
             </p>
         </div>
@@ -643,10 +640,10 @@
 <section id="roadmap" class="container center">
     <h2>Roadmap</h2>
     <div>
-        <div class="phase"><strong>PHASE 1 — IGNITION</strong>Token Launch • Liquidity Added • Website Live • Social Networks • Community Building</div>
-        <div class="phase"><strong>PHASE 2 — MOMENTUM</strong>Organic Growth • Exchange Listings • Merchandise Launch • Airdrops for Holders</div>
-        <div class="phase"><strong>PHASE 3 — MOVEMENT</strong>Influencer Partnerships • NFT Collection Drop • Ecosystem Expansion</div>
-        <div class="phase"><strong>PHASE 4 — DOMINATION</strong>Strategic Partnerships • Global Scaling • Long-term Utility Development</div>
+        <div class="phase"><strong>PHASE 1 — IGNITION (Q1 2026)</strong>Token Launch • Liquidity Provision • Website Deployment • Social Channel Setup • Community Engagement</div>
+        <div class="phase"><strong>PHASE 2 — MOMENTUM (Q2 2026)</strong>Organic Expansion • Exchange Listings • Merchandise Release • Holder Airdrops</div>
+        <div class="phase"><strong>PHASE 3 — MOVEMENT (Q3 2026)</strong>Influencer Collaborations • NFT Collection Launch • Ecosystem Development</div>
+        <div class="phase"><strong>PHASE 4 — DOMINATION (Q4 2026)</strong>Strategic Alliances • Global Outreach • Utility Enhancements</div>
     </div>
 </section>
 
@@ -656,15 +653,15 @@
         <h2>Security & Transparency</h2>
         <div class="grid" style="max-width: 900px;">
             <div class="card center" style="background: linear-gradient(135deg, #111, #1a1a1a);">
-                <h3 style="color: var(--gold);"> Fair Launch on Pump.fun</h3></div>
+                <h3 style="color: var(--gold);">Fair Launch on Pump.fun</h3></div>
             <div class="card center" style="background: linear-gradient(135deg, #111, #1a1a1a);">
-                <h3 style="color: var(--gold);"> 0% Tax</h3> </div>
+                <h3 style="color: var(--gold);">0% Tax</h3> </div>
             <div class="card center" style="background: linear-gradient(135deg, #111, #1a1a1a);">
-                <h3 style="color: var(--gold);"> Public contract</h3> </div>
+                <h3 style="color: var(--gold);">Public Contract</h3> </div>
             <div class="card center" style="background: linear-gradient(135deg, #111, #1a1a1a);">
-                <h3 style="color: var(--gold);"> LP Burned</h3>
-                <p class="muted">100% Liquidity Permanently Burned. Check on Solscan: 
-                    <a href="https://solscan.io/tx/EXAMPLE_TX_HASH" target="_blank" style="color: var(--accent);">View Tx</a> <!-- Replace with actual TX hash -->
+                <h3 style="color: var(--gold);">Tokens Burned</h3>
+                <p class="muted">Significant token burn for scarcity. View on Solscan: 
+                    <a href="https://solscan.io/tx/4aAC5TAHQRojGLtxMqEVivUEPCERLpTLnAa3pFAKC3NcHKGUip5ej29k2Qz1jnft8dYdk3DZeF7juRAUhc9bLhxN" target="_blank" style="color: var(--accent);">View Tx</a>
                 </p>
             </div>
         </div>
@@ -673,34 +670,34 @@
 
 <!-- FAQ -->
 <section id="faq" class="container">
-    <h2 class="center">FAQ</h2>
+    <h2 class="center">Frequently Asked Questions</h2>
     <div style="max-width: 900px; margin: auto;">
         <div class="faq-item center" >
             <strong class="faq-question">Is liquidity locked?</strong>
-            <p class="muted">Yes. Liquidity is permanently burned for security.</p>
+            <p class="muted">Liquidity is managed through Pump.fun's fair launch mechanism. Upon graduation to Raydium, it will be permanently locked.</p>
         </div>
         <div class="faq-item center">
-            <strong class="faq-question">Is there tax?</strong>
-            <p class="muted">0% Buy / 0% Sell. Completely tax-free.</p>
+            <strong class="faq-question">Is there a tax?</strong>
+            <p class="muted">0% on buys and sells for frictionless trading.</p>
         </div>
         <div class="faq-item center">
             <strong class="faq-question">Is this financial advice?</strong>
-            <p class="muted">No. Always do your own research (DYOR).</p>
+            <p class="muted">No. Always conduct your own research (DYOR).</p>
         </div>
         <div class="faq-item center">
             <strong class="faq-question">How can I join the community?</strong>
-            <p class="muted">Follow us on X (@Yeah_mindset) and join our Telegram.</p>
+            <p class="muted">Follow us on X (@Yeah_mindset) and join our Telegram group.</p>
         </div>
         <div class="faq-item center">
-            <strong class="faq-question">What makes $YEAH different?</strong>
-            <p class="muted">$YEAH is built on conviction and culture, not hype. Community-driven with real movement.</p>
+            <strong class="faq-question">What sets $YEAH apart?</strong>
+            <p class="muted">$YEAH is driven by conviction and culture, fostering a dedicated community for sustainable growth.</p>
         </div>
     </div>
 </section>
 
-<!-- LATEST FROM X -->
+<!-- COMMUNITY -->
 <section id="community" class="container center" style="background: #0a0a0a;">
-    <h2>Latest from @Yeah_mindset</h2>
+    <h2>Community Updates</h2>
     <div style="max-width: 800px; margin: auto;">
         <a class="twitter-timeline" 
            href="https://twitter.com/Yeah_mindset" 
@@ -711,53 +708,49 @@
         </a>
     </div>
     <div style="margin-top: 1.5rem;">
-        <a href="https://x.com/Yeah_mindset" target="_blank" class="btn btn-primary">Follow for Updates →</a>
+        <a href="https://x.com/Yeah_mindset" target="_blank" class="btn btn-primary">Follow for Updates</a>
     </div>
 </section>
 
 <!-- DISCLAIMER -->
 <section style="background: #0a0a0a; padding: 60px 0; text-align: center;">
     <div class="container" style="max-width: 900px;">
-        <h2 style="color: var(--accent);">Important Disclaimer</h2>
-        <p class="muted" style="font-size: clamp(1rem, 4vw, 1.2rem); line-height: 1.7;">
-            $YEAH is a community-driven meme token on Solana with no intrinsic value or expectation of financial return. 
-            This is not financial advice. Cryptocurrency investments carry high risk and you could lose all your funds. 
-            Always DYOR (Do Your Own Research). Liquidity is burned and contract is public — but crypto is volatile. 
-            Participate at your own risk. No team allocation, fair launch vibes only.
+        <h2 style="color: var(--accent);">Disclaimer</h2>
+        <p class="muted" style="font-size: 1.1rem; line-height: 1.7;">
+            $YEAH is a community-driven meme token on Solana without intrinsic value or financial return expectations. 
+            This is not financial advice. Cryptocurrency investments are high-risk and may result in total loss. 
+            Always DYOR. The contract is public, and the launch is fair—no team tokens.
         </p>
     </div>
 </section>
 
-<!-- COMMUNITY & CTA -->
+<!-- CTA -->
 <section class="center cta-section">
     <div class="container">
-        <h2>Join the Movement</h2>
-        <a href="https://x.com/Yeah_mindset" target="_blank" class="btn btn-secondary" style="font-size: clamp(1.1rem, 4.5vw, 1.4rem); padding: 14px 40px; margin: 1rem;">Join on X</a>
-        <a href="https://t.me/Yeah_mindset" target="_blank" class="btn btn-secondary" style="font-size: clamp(1.1rem, 4.5vw, 1.4rem); padding: 14px 40px; margin: 1rem;">Join Telegram</a>
+        <h2>Join the $YEAH Movement</h2>
+        <a href="https://x.com/Yeah_mindset" target="_blank" class="btn btn-secondary" style="padding: 14px 40px; margin: 1rem;">Join on X</a>
+        <a href="https://t.me/Yeah_mindset" target="_blank" class="btn btn-secondary" style="padding: 14px 40px; margin: 1rem;">Join Telegram</a>
 
-        <h2 class="cta-title">Ready to Say $YEAH?</h2>
+        <h2 class="cta-title">Ready to Embrace $YEAH?</h2>
         <a href="https://pump.fun/7wN4sxftxgoSzNorVSW3rQmRy7EjQDeWURfTSg3Gpump" target="_blank" class="btn btn-primary cta-btn-large">Buy $YEAH Now</a>
     </div>
 </section>
 
-<!-- FOOTER -->
 <footer class="center">
-    <div class="glow"></div>
     <div class="container">
         <div class="footer-top">
-            <img src="https://i.imgur.com/5AcmfL9.png" alt="Logo" style="height: 28px;" loading="lazy">
-            <span>© 2026 $YEAH — Yeah is culture. Build on the god chain</span>
-            <img src="https://i.imgur.com/Nu28tcC.jpeg" alt="Logo" style="height: 28px;" loading="lazy">
+            <img src="https://i.imgur.com/LFWmlK1.png" alt="$YEAH Logo" style="height: 28px;" loading="lazy">
+            <span>© 2026 $YEAH Community — Conviction on Solana</span>
         </div>
 
         <div class="footer-solana">
-            Built on 
+            Powered by 
             <span class="solana-badge">Solana</span>
         </div>
 
         <div class="social">
             <a href="https://x.com/Yeah_mindset" target="_blank">
-                <img src="https://i.imgur.com/jmehGN1.jpeg" alt="X" loading="lazy">
+                <img src="https://i.imgur.com/jmehGN1.jpeg" alt="X (Twitter)" loading="lazy">
             </a>
             <a href="https://t.me/Yeah_mindset" target="_blank">
                 <img src="https://i.imgur.com/GXttLsv.jpeg" alt="Telegram" loading="lazy">
@@ -795,54 +788,58 @@
                 document.getElementById('liquidity').innerText = liq;
             }
 
-            // Holders: Set to N/A since Birdeye requires API key and is commented out
-            document.getElementById('holders').innerText = 'N/A';
+            // Holders using Rugcheck API
+            try {
+                const rugResponse = await fetch(`https://api.rugcheck.xyz/v1/tokens/${TOKEN_ADDRESS}/report`);
+                const rugData = await rugResponse.json();
+                const holders = rugData.holders?.count || 'N/A';
+                document.getElementById('holders').innerText = holders;
+            } catch (rugErr) {
+                console.error('Error fetching holders:', rugErr);
+                document.getElementById('holders').innerText = 'N/A';
+            }
 
         } catch (err) {
             console.error('Error fetching stats:', err);
-            document.getElementById('price').innerText = 'Error';
-            document.getElementById('marketCap').innerText = 'Error';
-            document.getElementById('liquidity').innerText = 'Error';
-            document.getElementById('holders').innerText = 'Error';
+            document.getElementById('price').innerText = 'N/A';
+            document.getElementById('marketCap').innerText = 'N/A';
+            document.getElementById('liquidity').innerText = 'N/A';
+            document.getElementById('holders').innerText = 'N/A';
         }
     }
 
     // Initial call
     updateLiveStats();
-    setInterval(updateLiveStats, 60000); // Every 60 seconds
+    setInterval(updateLiveStats, 60000);
 
     // Copy Contract
     function copyContract(btn) {
         const text = document.getElementById('contractAddress').innerText;
         navigator.clipboard.writeText(text).then(() => {
             btn.innerText = 'Copied!';
-            btn.style.background = '#00c853';
             setTimeout(() => {
                 btn.innerText = 'Copy Contract';
-                btn.style.background = 'var(--accent)';
             }, 2000);
         }).catch(err => console.error('Failed to copy:', err));
     }
 
-    // Wallet global vars
+    // Wallet connection code
     let connected = false;
     let publicKey = null;
 
-    // Elementos
-    const connectBtn = document.getElementById('connectWalletBtn');          // el de How to Buy
-    const connectBtnNav = document.getElementById('connectWalletBtnNav');    // nuevo en navbar
+    const connectBtn = document.getElementById('connectWalletBtn');
+    const connectBtnNav = document.getElementById('connectWalletBtnNav');
     const statusP = document.getElementById('walletStatus');
     const balanceP = document.getElementById('tokenBalance');
     const solBalanceNav = document.getElementById('solBalanceNav');
     const yeahBalanceNav = document.getElementById('yeahBalanceNav');
     const addressNav = document.getElementById('walletAddressNav');
 
-    // Función compartida para conectar/desconectar (usada por ambos botones)
     async function handleWalletConnection() {
         const provider = window.solana || window.phantom?.solana;
 
         if (!provider) {
-            if (statusP) statusP.innerText = 'Phantom not detected. Redirecting to install...';
+            statusP.innerText = 'Phantom not detected. Install Phantom.';
             window.open('https://phantom.app/download', '_blank');
             return;
         }
@@ -853,16 +850,12 @@
                 connected = false;
                 publicKey = null;
 
-                // Reset ambos botones
                 connectBtn.innerText = 'Connect Phantom Wallet';
                 connectBtnNav.innerText = 'Connect Wallet';
 
-                // Reset secciones
-                if (statusP) statusP.innerText = 'Wallet disconnected.';
-                if (statusP) statusP.style.color = 'var(--text-muted)';
-                if (balanceP) balanceP.style.display = 'none';
+                statusP.innerText = 'Wallet disconnected.';
+                balanceP.style.display = 'none';
 
-                // Ocultar saldos y address en navbar
                 solBalanceNav.style.display = 'none';
                 yeahBalanceNav.style.display = 'none';
                 addressNav.style.display = 'none';
@@ -874,36 +867,29 @@
             publicKey = resp.publicKey.toString();
             connected = true;
 
-            // Actualizar ambos botones
             connectBtn.innerText = 'Disconnect Wallet';
             connectBtnNav.innerText = 'Disconnect';
 
-            // Actualizar status principal
-            if (statusP) statusP.innerText = `Connected: ${publicKey.slice(0, 6)}...${publicKey.slice(-4)}`;
-            if (statusP) statusP.style.color = 'var(--gold)';
+            statusP.innerText = `Connected: ${publicKey.slice(0, 6)}...${publicKey.slice(-4)}`;
 
-            // Mostrar address abreviada (solo en desktop)
             addressNav.textContent = `${publicKey.slice(0,4)}...${publicKey.slice(-4)}`;
             addressNav.style.display = 'inline-block';
 
-            // Cargar saldos
             solBalanceNav.textContent = 'Loading...';
             yeahBalanceNav.textContent = 'Loading...';
             solBalanceNav.style.display = 'inline-block';
             yeahBalanceNav.style.display = 'inline-block';
 
-            if (balanceP) balanceP.style.display = 'block';
-            if (balanceP) balanceP.innerText = '$YEAH Balance: Loading...';
+            balanceP.style.display = 'block';
+            balanceP.innerText = '$YEAH Balance: Loading...';
 
             await updateWalletBalances();
         } catch (err) {
-            console.error('Wallet connection error:', err);
-            if (statusP) statusP.innerText = err.message || 'Error connecting. Try again.';
-            if (statusP) statusP.style.color = 'var(--accent)';
+            console.error('Connection error:', err);
+            statusP.innerText = 'Connection failed. Try again.';
         }
     }
 
-    // Función para actualizar saldos (navbar y principal)
     async function updateWalletBalances() {
         if (!publicKey) return;
 
@@ -911,12 +897,10 @@
             const connection = new solanaWeb3.Connection('https://api.mainnet-beta.solana.com');
             const pubKey = new solanaWeb3.PublicKey(publicKey);
 
-            // 1. SOL balance
             const solLamports = await connection.getBalance(pubKey);
             const sol = (solLamports / 1_000_000_000).toFixed(3);
             solBalanceNav.textContent = `${sol} SOL`;
 
-            // 2. $YEAH balance
             const tokenMint = new solanaWeb3.PublicKey(TOKEN_ADDRESS);
             const associatedTokenProgram = new solanaWeb3.PublicKey('ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL');
             const [ata] = solanaWeb3.PublicKey.findProgramAddressSync(
@@ -929,32 +913,27 @@
                 const tokenInfo = await connection.getTokenAccountBalance(ata);
                 const yeahAmount = tokenInfo.value.uiAmount;
                 yeahFormatted = yeahAmount >= 1000 ? `${(yeahAmount / 1000).toFixed(1)}k` : yeahAmount.toFixed(1);
-            } catch (tokenErr) {
-                // Si no tiene ATA o balance 0
-                console.warn('No $YEAH account found:', tokenErr);
-            }
+            } catch {}
 
             yeahBalanceNav.textContent = `${yeahFormatted} $YEAH`;
-            if (balanceP) balanceP.innerText = `$YEAH Balance: ${yeahFormatted} $YEAH`;
+            balanceP.innerText = `$YEAH Balance: ${yeahFormatted} $YEAH`;
 
         } catch (err) {
-            console.error('Balances fetch error:', err);
-            solBalanceNav.textContent = 'Error';
-            yeahBalanceNav.textContent = 'Error';
-            if (balanceP) balanceP.innerText = '$YEAH Balance: Error';
+            console.error('Balance error:', err);
+            solBalanceNav.textContent = 'N/A';
+            yeahBalanceNav.textContent = 'N/A';
+            balanceP.innerText = '$YEAH Balance: N/A';
         }
     }
 
-    // Conectar eventos a AMBOS botones
     connectBtn.addEventListener('click', handleWalletConnection);
     connectBtnNav.addEventListener('click', handleWalletConnection);
 
-    // Refrescar saldos cada 30s si conectado
     setInterval(() => {
         if (connected && publicKey) updateWalletBalances();
     }, 30000);
 
-    // Fade-in animation
+    // Fade-in sections
     const sections = document.querySelectorAll('section');
     const observer = new IntersectionObserver(entries => {
         entries.forEach(entry => {
@@ -966,12 +945,16 @@
 
     sections.forEach(section => observer.observe(section));
 
-    // Mobile Menu Toggle
+    // Mobile Menu
     const menuToggle = document.getElementById('menuToggle');
     const navMenu = document.getElementById('navMenu');
     menuToggle.addEventListener('click', () => {
         navMenu.classList.toggle('open');
     });
+
+    // Duplicate marquee content for seamless loop
+    const marquee = document.querySelector('.marquee');
+    marquee.innerHTML += marquee.innerHTML; // Duplicate for infinite scroll
 </script>
 </body>
 </html>
