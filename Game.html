@@ -1,797 +1,540 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Break the Chains – $YEAH Conviction Clicker Pro</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="manifest" href="data:application/manifest+json,{
-    'name': 'Break the Chains $YEAH',
-    'short_name': '$YEAH Clicker',
-    'start_url': '.',
-    'display': 'standalone',
-    'background_color': '#0a0a0a',
-    'theme_color': '#ff1493',
-    'icons': [{'src': 'data:image/svg+xml;base64,...', 'sizes': '192x192', 'type': 'image/png'}]
-  }">
-  <style>
-    :root {
-      --bg-primary: #0a0a0a;
-      --bg-secondary: #1a0f1f;
-      --accent: #ff1493;
-      --accent-dark: #c20e70;
-      --gold: #ffd700;
-      --chain: #666;
-      --text-primary: #ffffff;
-      --text-secondary: #cccccc;
-      --shadow-glow: 0 0 20px rgba(255,20,147,0.6);
-      --shadow-gold: 0 0 15px rgba(255,215,0,0.6);
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      height: 100vh;
-      background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 50%, var(--bg-primary) 100%);
-      color: var(--text-primary);
-      font-family: 'Inter', sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      user-select: none;
-      position: relative;
-    }
-
-    /* Animated background particles */
-    #bg-canvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -1;
-      opacity: 0.3;
-    }
-
-    h1 {
-      font-family: 'Orbitron', monospace;
-      font-size: clamp(2rem, 6vw, 4rem);
-      font-weight: 900;
-      background: linear-gradient(90deg, var(--gold), var(--accent), var(--gold));
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      margin: 0.5em 0;
-      text-shadow: var(--shadow-glow);
-      animation: glowPulse 2s ease-in-out infinite alternate;
-    }
-
-    @keyframes glowPulse {
-      0% { filter: drop-shadow(var(--shadow-glow)); }
-      100% { filter: drop-shadow(0 0 30px rgba(255,20,147,0.8)); }
-    }
-
-    #score {
-      font-family: 'Orbitron', monospace;
-      font-size: clamp(2.5rem, 8vw, 5rem);
-      font-weight: 700;
-      color: var(--gold);
-      margin: 0.5em 0;
-      text-shadow: var(--shadow-gold);
-    }
-
-    #chain-container {
-      position: relative;
-      width: clamp(200px, 40vw, 300px);
-      height: clamp(200px, 40vw, 300px);
-      margin: 1em 0;
-      cursor: pointer;
-      border-radius: 20px;
-      padding: 20px;
-      background: rgba(255,20,147,0.05);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255,20,147,0.2);
-      transition: all 0.3s ease;
-    }
-
-    #chain-container:hover {
-      box-shadow: var(--shadow-glow);
-      transform: scale(1.02);
-    }
-
-    #chain {
-      width: 100%;
-      height: 100%;
-      filter: drop-shadow(var(--shadow-glow));
-      transition: all 0.1s ease;
-      border-radius: 10px;
-    }
-
-    #chain:active {
-      transform: scale(0.95) rotate(5deg);
-    }
-
-    .particle {
-      position: absolute;
-      pointer-events: none;
-      font-family: 'Orbitron', monospace;
-      font-size: 1.5rem;
-      font-weight: 900;
-      color: var(--gold);
-      text-shadow: var(--shadow-gold);
-      animation: particleFloat 1.2s ease-out forwards;
-      z-index: 10;
-    }
-
-    @keyframes particleFloat {
-      0% { opacity: 1; transform: translateY(0) scale(1); }
-      100% { opacity: 0; transform: translateY(-150px) scale(1.5) rotate(360deg); }
-    }
-
-    .tabs {
-      display: flex;
-      gap: 1rem;
-      margin-bottom: 1rem;
-    }
-
-    .tab-btn {
-      background: rgba(17,17,17,0.8);
-      border: 2px solid var(--chain);
-      border-radius: 20px;
-      padding: 0.8rem 1.5rem;
-      font-family: 'Orbitron', monospace;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s;
-      color: var(--text-secondary);
-    }
-
-    .tab-btn.active {
-      background: linear-gradient(45deg, var(--accent), var(--accent-dark));
-      border-color: var(--accent);
-      color: white;
-      box-shadow: var(--shadow-glow);
-    }
-
-    .tab-content {
-      display: none;
-      width: 90%;
-      max-width: 800px;
-    }
-
-    .tab-content.active {
-      display: block;
-    }
-
-    .upgrades, .stats, .achievements {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 1.2rem;
-      padding: 1rem;
-    }
-
-    .upgrade-btn, .achievement {
-      background: rgba(17,17,17,0.9);
-      border: 2px solid var(--chain);
-      border-radius: 16px;
-      padding: 1.2rem;
-      text-align: left;
-      cursor: pointer;
-      transition: all 0.3s;
-      backdrop-filter: blur(10px);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .upgrade-btn::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-      transition: left 0.5s;
-    }
-
-    .upgrade-btn:hover::before {
-      left: 100%;
-    }
-
-    .upgrade-btn:hover {
-      border-color: var(--accent);
-      transform: translateY(-8px);
-      box-shadow: var(--shadow-glow);
-    }
-
-    .upgrade-btn.disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-      transform: none;
-    }
-
-    .upgrade-btn.disabled:hover {
-      transform: none;
-      box-shadow: none;
-    }
-
-    .upgrade-name {
-      font-family: 'Orbitron', monospace;
-      font-size: 1.2rem;
-      color: var(--gold);
-      margin-bottom: 0.4em;
-    }
-
-    .upgrade-desc {
-      font-size: 0.9rem;
-      color: var(--text-secondary);
-      margin-bottom: 0.5em;
-    }
-
-    .upgrade-cost {
-      font-weight: 700;
-      color: var(--accent);
-      font-size: 1.1rem;
-    }
-
-    .upgrade-owned {
-      position: absolute;
-      top: 0.5rem;
-      right: 0.5rem;
-      background: var(--accent);
-      color: white;
-      border-radius: 50%;
-      width: 28px;
-      height: 28px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.8rem;
-      font-weight: 700;
-    }
-
-    .progress-bar {
-      width: 100%;
-      height: 4px;
-      background: rgba(255,255,255,0.1);
-      border-radius: 2px;
-      overflow: hidden;
-      margin-top: 0.5em;
-    }
-
-    .progress-fill {
-      height: 100%;
-      background: linear-gradient(90deg, var(--gold), var(--accent));
-      width: 0%;
-      transition: width 0.3s;
-    }
-
-    .prestige-btn {
-      background: linear-gradient(45deg, var(--gold), #ffaa00);
-      border: none;
-      border-radius: 20px;
-      padding: 1rem 2rem;
-      font-family: 'Orbitron', monospace;
-      font-size: 1.2rem;
-      font-weight: 700;
-      color: #000;
-      cursor: pointer;
-      margin: 1rem;
-      box-shadow: var(--shadow-gold);
-      transition: all 0.3s;
-    }
-
-    .prestige-btn:hover:not(:disabled) {
-      transform: scale(1.05);
-      box-shadow: 0 0 30px rgba(255,215,0,0.8);
-    }
-
-    .prestige-btn:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
-
-    .buy-token {
-      position: fixed;
-      bottom: 2rem;
-      left: 50%;
-      transform: translateX(-50%);
-      background: linear-gradient(45deg, var(--accent), var(--accent-dark));
-      border: none;
-      border-radius: 50px;
-      padding: 1rem 2rem;
-      font-family: 'Orbitron', monospace;
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: white;
-      cursor: pointer;
-      box-shadow: var(--shadow-glow);
-      z-index: 100;
-      transition: all 0.3s;
-    }
-
-    .buy-token:hover {
-      transform: translateX(-50%) scale(1.05);
-      box-shadow: 0 0 40px rgba(255,20,147,0.9);
-    }
-
-    footer {
-      position: fixed;
-      bottom: 0.5rem;
-      font-size: 0.8rem;
-      opacity: 0.8;
-      text-align: center;
-      z-index: 50;
-    }
-
-    .sound-toggle {
-      position: fixed;
-      top: 1rem;
-      right: 1rem;
-      background: rgba(0,0,0,0.5);
-      border: 2px solid var(--accent);
-      border-radius: 50%;
-      width: 50px;
-      height: 50px;
-      cursor: pointer;
-      color: var(--accent);
-      font-size: 1.2rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 100;
-    }
-
-    @media (max-width: 768px) {
-      .upgrades, .stats, .achievements {
-        grid-template-columns: 1fr;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🧱 Breakout $YEAH - Shatter FUD Chains! | Yeah Mindset</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #000;
+            --card-bg: #1a1a1a;
+            --accent: #ff1493;
+            --accent-light: #ff4db8;
+            --gold: #ffd700;
+            --text: #ffffff;
+            --text-muted: rgba(255,255,255,0.8);
+            --border: rgba(255,255,255,0.1);
+            --shadow: 0 10px 30px rgba(0,0,0,0.5);
+            --shadow-hover: 0 15px 40px rgba(255,20,147,0.2);
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            text-align: center;
+            overflow-x: hidden;
+            padding-top: 90px;
+        }
+        h1, h2 {
+            font-family: 'Orbitron', monospace;
+            font-weight: 900;
+        }
+        /* Navbar - Copied & Adapted from index.html */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+        nav {
+            background: rgba(0,0,0,0.9);
+            backdrop-filter: blur(12px);
+            transition: background 0.3s ease;
+        }
+        nav:hover {
+            background: rgba(0,0,0,1);
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 80px;
+        }
+        nav a img {
+            height: 40px;
+        }
+        .menu-toggle {
+            display: none;
+            font-size: 2em;
+            cursor: pointer;
+            color: var(--text);
+            font-weight: 900;
+        }
+        #navMenu {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            gap: 2em;
+        }
+        #navMenu li a {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 0.95em;
+        }
+        #navMenu li a:hover,
+        #navMenu li a.active {
+            color: var(--accent);
+            transform: translateY(-2px);
+        }
+        .buy-btn {
+            background: linear-gradient(90deg, var(--gold), var(--accent));
+            padding: 12px 28px;
+            border: none;
+            border-radius: 50px;
+            color: black;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow);
+            font-size: 0.9em;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .buy-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-hover);
+        }
+        /* Mobile */
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
+            #navMenu {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: var(--card-bg);
+                flex-direction: column;
+                padding: 1em 20px;
+                gap: 1em;
+                display: none;
+            }
+            #navMenu.active {
+                display: flex;
+            }
+            .container {
+                height: 70px;
+            }
+        }
+        /* Game */
+        h1 {
+            font-size: 2.2em;
+            text-shadow: 0 0 20px var(--accent);
+            margin: 20px 0 10px 0;
+            letter-spacing: 2px;
+        }
+        #gameCanvas {
+            border: 3px solid var(--accent);
+            border-radius: 20px;
+            box-shadow: var(--shadow), 0 0 40px rgba(255,20,147,0.3);
+            display: block;
+            margin: 20px auto;
+            background: var(--bg);
+            touch-action: none;
+            max-width: 100%;
+            height: auto;
+        }
+        #ui {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.5em;
+            font-weight: 700;
+            margin: 20px 0;
+            color: var(--gold);
+            text-shadow: 0 0 10px var(--gold);
+            letter-spacing: 1px;
+        }
+        #tweetBtn {
+            display: none;
+            padding: 15px 40px;
+            background: linear-gradient(90deg, var(--gold), var(--accent));
+            color: black;
+            border: none;
+            border-radius: 50px;
+            font-family: 'Orbitron', monospace;
+            font-size: 1.1em;
+            font-weight: 900;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow);
+            margin: 10px;
+        }
+        #tweetBtn:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-hover);
+        }
+        @keyframes confetti-fall {
+            to { transform: translateY(-120vh) rotate(720deg); opacity: 0; }
+        }
+        @media (max-width: 500px) {
+            #gameCanvas {
+                width: 95vw;
+                height: 60vh;
+            }
+        }
+    </style>
 </head>
 <body>
-  <canvas id="bg-canvas"></canvas>
+    <!-- Navbar from index.html -->
+    <header>
+        <nav>
+            <div class="container">
+                <a href="https://yeahmindset.vercel.app/#hero"><img src="https://i.imgur.com/LFWmlK1.png" alt="$YEAH Logo" loading="lazy"></a>
+                <div class="menu-toggle" id="menuToggle">≡</div>
+                <ul id="navMenu">
+                    <li><a href="https://yeahmindset.vercel.app/#hero">Home</a></li>
+                    <li><a href="https://yeahmindset.vercel.app/#why">Why $YEAH</a></li>
+                    <li><a href="https://yeahmindset.vercel.app/#tokenomics">Tokenomics</a></li>
+                    <li><a href="https://yeahmindset.vercel.app/#howtobuy">How to Buy</a></li>
+                    <li><a href="https://yeahmindset.vercel.app/#roadmap">Roadmap</a></li>
+                    <li><a href="https://yeahmindset.vercel.app/#security">Security</a></li>
+                    <li><a href="https://yeahmindset.vercel.app/#faq">FAQ</a></li>
+                    <li><a href="https://yeahmindset.vercel.app/#community">Community</a></li>
+                    <li><a href="https://yeahmindset.vercel.app/merch.html">Merch</a></li>
+                    <li><a href="#" class="active">Game</a></li>
+                </ul>
+                <a href="https://dexscreener.com/solana/7wn4sxftxgosznorvsw3rqmry7ejqdewurftsg3gpump" class="buy-btn" target="_blank">Buy $YEAH</a>
+            </div>
+        </nav>
+    </header>
 
-  <button class="sound-toggle" id="soundToggle">🔊</button>
+    <h1>🧱 Breakout $YEAH</h1>
+    <p style="opacity:0.9; max-width:500px; margin:0 auto 20px; font-weight:500;">Move paddle | Shatter FUD Chains | Build Conviction 💎🙌</p>
+    <canvas id="gameCanvas" width="500" height="700"></canvas>
+    <div id="ui">Shatters: 0 | Level: 1 | Lives: 3 | High: 0</div>
+    <button id="tweetBtn">📱 Tweet Highscore! @Yeah_mindset 🚀</button>
 
-  <h1>Break the Chains</h1>
-  <div id="score">0 $YEAH Conviction</div>
-  <div id="multiplier">x1.00</div>
-
-  <div id="chain-container">
-    <!-- SVG Chain for scalability and glow -->
-    <svg id="chain" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <filter id="glow">
-          <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
-          <feMerge> 
-            <feMergeNode in="coloredBlur"/>
-            <feMergeNode in="SourceGraphic"/>
-          </feMerge>
-        </filter>
-        <radialGradient id="chainGrad" cx="50%" cy="50%">
-          <stop offset="0%" stop-color="var(--accent)"/>
-          <stop offset="50%" stop-color="#ffffff"/>
-          <stop offset="100%" stop-color="var(--accent-dark)"/>
-        </radialGradient>
-      </defs>
-      <!-- Multiple chain links for realistic look -->
-      <circle cx="150" cy="80" r="40" fill="url(#chainGrad)" stroke="#fff" stroke-width="4" filter="url(#glow)"/>
-      <circle cx="150" cy="220" r="40" fill="url(#chainGrad)" stroke="#fff" stroke-width="4" filter="url(#glow)"/>
-      <circle cx="80" cy="150" r="40" fill="url(#chainGrad)" stroke="#fff" stroke-width="4" filter="url(#glow)"/>
-      <circle cx="220" cy="150" r="40" fill="url(#chainGrad)" stroke="#fff" stroke-width="4" filter="url(#glow)"/>
-      <!-- Connectors -->
-      <path d="M150 120 Q150 150 150 180" stroke="#fff" stroke-width="8" stroke-linecap="round" filter="url(#glow)" fill="none"/>
-      <path d="M110 150 Q140 150 170 150" stroke="#fff" stroke-width="8" stroke-linecap="round" filter="url(#glow)" fill="none"/>
-      <path d="M190 150 Q220 150 250 150" stroke="#fff" stroke-width="8" stroke-linecap="round" filter="url(#glow)" fill="none"/>
-      <!-- Break effect overlay (hidden initially) -->
-      <g id="break-effect" opacity="0">
-        <path d="M150 120 L150 180" stroke="var(--gold)" stroke-width="20" stroke-linecap="round"/>
-        <circle cx="150" cy="150" r="30" fill="var(--gold)" opacity="0.8"/>
-      </g>
-    </svg>
-  </div>
-
-  <div class="tabs">
-    <button class="tab-btn active" data-tab="upgrades">Upgrades</button>
-    <button class="tab-btn" data-tab="stats">Stats</button>
-    <button class="tab-btn" data-tab="achievements">Achievements</button>
-  </div>
-
-  <div id="upgrades-tab" class="tab-content active">
-    <div class="upgrades">
-      <!-- Upgrades will be populated by JS -->
-    </div>
-    <button class="prestige-btn" id="prestigeBtn" disabled>Prestige (1e12 Conviction)</button>
-  </div>
-
-  <div id="stats-tab" class="tab-content">
-    <div class="stats">
-      <!-- Stats populated by JS -->
-    </div>
-  </div>
-
-  <div id="achievements-tab" class="tab-content">
-    <div class="achievements">
-      <!-- Achievements populated by JS -->
-    </div>
-  </div>
-
-  <a href="https://dexscreener.com/solana/7wN4sxftxgoSzNorVSW3rQmRy7EjQDeWURfTSg3Gpump" target="_blank" class="buy-token">
-    Buy $YEAH Now 🚀
-  </a>
-
-  <footer>
-    CA: <strong>7wN4sxftxgoSzNorVSW3rQmRy7EjQDeWURfTSg3Gpump</strong> | $YEAH Movement • Break the Chains • Pure Conviction<br>
-    <a href="https://t.me/+92r6NGH6cA" target="_blank">Telegram</a> | Stay $yeah
-  </footer>
-
-  <script>
-    class YeahClicker {
-      constructor() {
-        this.conviction = 0;
-        this.clickPower = 1;
-        this.autoPower = 0;
-        this.multiplier = 1;
-        this.prestige = 0;
-        this.totalClicks = 0;
-        this.totalConviction = 0;
-        this.owned = {};
-        this.achievements = {};
-        this.soundEnabled = true;
-        this.lastUpdate = 0;
-        this.offlineStart = Date.now();
-        this.offlineConviction = 0;
-
-        this.upgrades = [
-          { id: 'auto1', name: 'Mindset Shiller', desc: 'Rompe 1 cadena cada 1.2s', cost: 50, power: 1, type: 'auto' },
-          { id: 'click1', name: 'Conviction Chad', desc: '+8 daño por clic', cost: 320, power: 8, type: 'click' },
-          { id: 'auto2', name: 'FUD Destroyer', desc: 'Rompe 5 cadenas por segundo', cost: 1800, power: 5, type: 'auto' },
-          { id: 'multi1', name: 'Diamond Hands', desc: '+20% auto power', cost: 7500, power: 0.2, type: 'multi' },
-          { id: 'click2', name: 'Yeah Bro', desc: '+25 daño por clic', cost: 25000, power: 25, type: 'click' },
-          { id: 'auto3', name: 'Chain Breaker Pro', desc: 'Rompe 20 cadenas/seg', cost: 100000, power: 20, type: 'auto' },
-          { id: 'multi2', name: 'Mindset Master', desc: 'x2 todos los poderes', cost: 500000, power: 2, type: 'multi-all' }
-        ];
-
-        this.achievementsList = [
-          { id: 'firstClick', name: 'Primer Clic', desc: '¡Rompe tu primera cadena!', target: 1, reward: 10 },
-          { id: '100clicks', name: 'Degen Inicial', desc: '100 clics totales', target: 100, reward: 100 },
-          { id: '1kConv', name: 'Conviction Novato', desc: '1k Conviction', target: 1000, reward: 500 },
-          { id: 'prestige1', name: 'Prestige Desbloqueado', desc: 'Primer prestige', target: 1, reward: 10000 }
-        ];
-
-        this.init();
-      }
-
-      init() {
-        this.scoreEl = document.getElementById('score');
-        this.multiEl = document.getElementById('multiplier');
-        this.chainEl = document.getElementById('chain');
-        this.containerEl = document.getElementById('chain-container');
-        this.upgradesEl = document.querySelector('.upgrades');
-        this.prestigeBtn = document.getElementById('prestigeBtn');
-
-        this.loadGame();
-        this.setupEventListeners();
-        this.createBgParticles();
-        this.updateDisplay();
-        this.gameLoop();
-        this.autoSave();
-      }
-
-      setupEventListeners() {
-        this.containerEl.addEventListener('click', (e) => this.handleClick(e));
-
-        document.querySelectorAll('.tab-btn').forEach(btn => {
-          btn.addEventListener('click', (e) => {
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-            e.target.classList.add('active');
-            document.getElementById(e.target.dataset.tab + '-tab').classList.add('active');
-          });
+    <script>
+        // Navbar Mobile Toggle
+        document.getElementById('menuToggle').addEventListener('click', () => {
+            document.getElementById('navMenu').classList.toggle('active');
         });
 
-        this.prestigeBtn.addEventListener('click', () => this.prestigeReset());
-
-        document.getElementById('soundToggle').addEventListener('click', () => {
-          this.soundEnabled = !this.soundEnabled;
-          document.getElementById('soundToggle').textContent = this.soundEnabled ? '🔊' : '🔇';
-        });
-      }
-
-      handleClick(e) {
-        const rect = this.containerEl.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-
-        this.conviction += this.clickPower * this.multiplier;
-        this.totalClicks++;
-        this.totalConviction += this.clickPower * this.multiplier;
-        this.createParticle(x, y, `+${Math.floor(this.clickPower * this.multiplier)}`);
-        this.playSound();
-        this.checkAchievements();
-
-        // Shake and break effect
-        this.chainEl.style.animation = 'none';
-        setTimeout(() => {
-          this.chainEl.style.animation = 'shake 0.2s ease-out';
-        }, 10);
-
-        document.getElementById('break-effect').style.opacity = '1';
-        setTimeout(() => {
-          document.getElementById('break-effect').style.opacity = '0';
-        }, 200);
-
-        this.updateDisplay();
-      }
-
-      createParticle(x, y, text) {
-        const p = document.createElement('div');
-        p.className = 'particle';
-        p.textContent = text;
-        p.style.left = (x - 20) + 'px';
-        p.style.top = (y + 20) + 'px';
-        this.containerEl.appendChild(p);
-        setTimeout(() => p.remove(), 1200);
-      }
-
-      playSound() {
-        if (!this.soundEnabled) return;
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        const oscillator = audioCtx.createOscillator();
-        const gainNode = audioCtx.createGain();
-        oscillator.connect(gainNode);
-        gainNode.connect(audioCtx.destination);
-        oscillator.frequency.value = 800;
-        oscillator.type = 'sine';
-        gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime);
-        gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
-        oscillator.start(audioCtx.currentTime);
-        oscillator.stop(audioCtx.currentTime + 0.1);
-      }
-
-      updateUpgrades() {
-        this.upgradesEl.innerHTML = '';
-        this.upgrades.forEach(up => {
-          const owned = this.owned[up.id] || 0;
-          const nextCost = Math.floor(up.cost * Math.pow(1.15, owned));
-          const canAfford = this.conviction >= nextCost;
-
-          const div = document.createElement('div');
-          div.className = `upgrade-btn ${!canAfford ? 'disabled' : ''}`;
-          div.id = up.id;
-          div.innerHTML = `
-            <div class="upgrade-owned">${owned}</div>
-            <div class="upgrade-name">${up.name}</div>
-            <div class="upgrade-desc">${up.desc}</div>
-            <div class="upgrade-cost">Costo: <strong>${nextCost.toLocaleString()}</strong></div>
-            <div class="progress-bar"><div class="progress-fill" style="width: ${Math.min((this.conviction / nextCost) * 100, 100)}%"></div></div>
-          `;
-          div.addEventListener('click', () => this.buyUpgrade(up.id));
-          this.upgradesEl.appendChild(div);
-        });
-      }
-
-      buyUpgrade(id) {
-        const up = this.upgrades.find(u => u.id === id);
-        const owned = this.owned[up.id] || 0;
-        const cost = Math.floor(up.cost * Math.pow(1.15, owned));
-        if (this.conviction >= cost) {
-          this.conviction -= cost;
-          this.owned[up.id] = owned + 1;
-
-          if (up.type === 'click') {
-            this.clickPower += up.power;
-          } else if (up.type === 'auto') {
-            this.autoPower += up.power;
-          } else if (up.type === 'multi') {
-            this.multiplier *= (1 + up.power);
-          } else if (up.type === 'multi-all') {
-            this.clickPower *= up.power;
-            this.autoPower *= up.power;
-          }
-
-          this.updateDisplay();
-          this.checkAchievements();
-        }
-      }
-
-      prestigeReset() {
-        if (this.conviction >= 1e12) {
-          this.prestige++;
-          this.multiplier += 0.01 * this.prestige; // +1% per level
-          this.conviction = 0;
-          this.clickPower = 1;
-          this.autoPower = 0;
-          this.owned = {};
-          this.updateDisplay();
-          this.loadAchievements(); // Unlock prestige ach
-        }
-      }
-
-      checkAchievements() {
-        this.achievementsList.forEach(ach => {
-          if (!this.achievements[ach.id]) {
-            let unlocked = false;
-            if (ach.id === 'firstClick' && this.totalClicks >= 1) unlocked = true;
-            if (ach.id === '100clicks' && this.totalClicks >= 100) unlocked = true;
-            if (ach.id === '1kConv' && this.totalConviction >= 1000) unlocked = true;
-            if (ach.id === 'prestige1' && this.prestige >= 1) unlocked = true;
-
-            if (unlocked) {
-              this.achievements[ach.id] = true;
-              this.conviction += ach.reward;
-              this.updateDisplay();
-            }
-          }
-        });
-      }
-
-      updateStats() {
-        const statsEl = document.querySelector('.stats');
-        statsEl.innerHTML = `
-          <div class="upgrade-btn">
-            <div class="upgrade-name">Total Clics</div>
-            <div class="upgrade-desc">${this.totalClicks.toLocaleString()}</div>
-          </div>
-          <div class="upgrade-btn">
-            <div class="upgrade-name">Conviction Total</div>
-            <div class="upgrade-desc">${Math.floor(this.totalConviction).toLocaleString()}</div>
-          </div>
-          <div class="upgrade-btn">
-            <div class="upgrade-name">Prestige Nivel</div>
-            <div class="upgrade-desc">${this.prestige}</div>
-          </div>
-          <div class="upgrade-btn">
-            <div class="upgrade-name">Auto/Seg</div>
-            <div class="upgrade-desc">${Math.floor(this.autoPower * this.multiplier)}</div>
-          </div>
-        `;
-      }
-
-      updateAchievements() {
-        const achEl = document.querySelector('.achievements');
-        achEl.innerHTML = '';
-        this.achievementsList.forEach(ach => {
-          const unlocked = this.achievements[ach.id];
-          const div = document.createElement('div');
-          div.className = `achievement ${unlocked ? 'unlocked' : ''}`;
-          div.innerHTML = `
-            <div class="upgrade-name">${ach.name}</div>
-            <div class="upgrade-desc">${ach.desc} ${unlocked ? '✅' : '🔒'}</div>
-          `;
-          achEl.appendChild(div);
-        });
-      }
-
-      updateDisplay() {
-        this.scoreEl.textContent = Math.floor(this.conviction).toLocaleString() + ' $YEAH Conviction';
-        this.multiEl.textContent = `x${this.multiplier.toFixed(2)}`;
-        this.prestigeBtn.disabled = this.conviction < 1e12;
-        this.prestigeBtn.textContent = `Prestige (1e12) +${(this.prestige * 0.01 * 100).toFixed(0)}%`;
-
-        this.updateUpgrades();
-        this.updateStats();
-        this.updateAchievements();
-      }
-
-      gameLoop() {
-        const now = performance.now();
-        const delta = (now - this.lastUpdate) / 1000;
-        this.conviction += this.autoPower * this.multiplier * delta;
-        this.totalConviction += this.autoPower * this.multiplier * delta;
-        this.lastUpdate = now;
-        this.updateDisplay();
-        requestAnimationFrame(() => this.gameLoop());
-      }
-
-      createBgParticles() {
-        const canvas = document.getElementById('bg-canvas');
+        // Game Code (Improved: New colors, responsive canvas scale, smoother physics, Orbitron UI)
+        const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+        const ui = document.getElementById('ui');
+        const tweetBtn = document.getElementById('tweetBtn');
 
-        window.addEventListener('resize', () => {
-          canvas.width = window.innerWidth;
-          canvas.height = window.innerHeight;
+        // Responsive canvas
+        function resizeCanvas() {
+            const maxW = Math.min(500, window.innerWidth * 0.95);
+            const scale = maxW / 500;
+            canvas.style.width = maxW + 'px';
+            canvas.style.height = (700 * scale) + 'px';
+            canvas.width = 500;
+            canvas.height = 700;
+            ctx.scale(1,1); // Reset if needed
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        let gameState = 'start';
+        let paddle = { x: 200, w: 100, h: 15, speed: 8 };
+        let balls = [{ x: 250, y: 500, vx: 4, vy: -4, r: 10 }];
+        let bricks = [];
+        let powerups = [];
+        let score = 0;
+        let level = 1;
+        let lives = 3;
+        let highscore = parseInt(localStorage.getItem('yeahBreakoutHS')) || 0;
+        let frame = 0;
+        let mouseX = 225;
+
+        function initLevel() {
+            bricks = [];
+            const rows = 5 + Math.floor(level / 2);
+            const cols = 10;
+            for (let r = 0; r < rows; r++) {
+                for (let c = 0; c < cols; c++) {
+                    bricks.push({
+                        x: c * 48 + 25,
+                        y: r * 25 + 50,
+                        w: 45,
+                        h: 20,
+                        alive: true
+                    });
+                }
+            }
+        }
+
+        function initGame() {
+            level = 1;
+            score = 0;
+            lives = 3;
+            balls = [{ x: 250, y: 500, vx: 4, vy: -4, r: 10 }];
+            paddle.x = 200;
+            paddle.w = 100;
+            initLevel();
+            gameState = 'start';
+            tweetBtn.style.display = 'none';
+            updateUI();
+        }
+
+        function update() {
+            if (gameState !== 'play') return;
+
+            // Paddle (smoother follow)
+            const targetX = Math.max(paddle.w / 2, Math.min(canvas.width - paddle.w / 2, mouseX));
+            paddle.x += (targetX - paddle.x - paddle.w / 2) * 0.25;
+
+            // Balls (improved physics)
+            for (let i = balls.length - 1; i >= 0; i--) {
+                const ball = balls[i];
+                ball.x += ball.vx;
+                ball.y += ball.vy;
+
+                // Walls
+                if (ball.x - ball.r < 0 || ball.x + ball.r > canvas.width) ball.vx *= -1;
+                if (ball.y - ball.r < 0) ball.vy *= -1;
+                if (ball.y + ball.r > canvas.height) {
+                    balls.splice(i, 1);
+                    if (balls.length === 0) {
+                        lives--;
+                        if (lives <= 0) gameOver();
+                        else balls = [{ x: 250, y: 500, vx: 4 * (0.8 + level*0.05), vy: -4, r: 10 }];
+                    }
+                    continue;
+                }
+
+                // Paddle hit (angle based on hit position)
+                if (ball.y + ball.r > canvas.height - paddle.h - 10 &&
+                    ball.x > paddle.x && ball.x < paddle.x + paddle.w) {
+                    ball.vy *= -1.05;
+                    const hitPos = (ball.x - (paddle.x + paddle.w / 2)) / (paddle.w / 2);
+                    ball.vx += hitPos * 2;
+                }
+
+                // Bricks
+                for (let j = bricks.length - 1; j >= 0; j--) {
+                    const brick = bricks[j];
+                    if (brick.alive && 
+                        ball.x + ball.r > brick.x && ball.x - ball.r < brick.x + brick.w &&
+                        ball.y + ball.r > brick.y && ball.y - ball.r < brick.y + brick.h) {
+                        brick.alive = false;
+                        score += 10 * level;
+                        ball.vy *= -1;
+                        if (Math.random() < 0.25) { // More powerups
+                            powerups.push({ 
+                                x: brick.x + brick.w/2, 
+                                y: brick.y + brick.h/2, 
+                                vy: 2, 
+                                type: Math.floor(Math.random()*3) 
+                            });
+                        }
+                        break;
+                    }
+                }
+            }
+
+            // Powerups (fall & collect)
+            for (let i = powerups.length - 1; i >= 0; i--) {
+                const pu = powerups[i];
+                pu.y += pu.vy;
+                if (pu.y > canvas.height - paddle.h && pu.x > paddle.x && pu.x < paddle.x + paddle.w) {
+                    powerups.splice(i, 1);
+                    switch(pu.type) {
+                        case 0: // Multi-ball
+                            balls.push({ x: paddle.x + paddle.w/2, y: canvas.height - 50, vx: (Math.random()-0.5)*8, vy: -6, r: 10 });
+                            break;
+                        case 1: // Big paddle
+                            paddle.w = Math.min(200, paddle.w * 1.5);
+                            setTimeout(() => paddle.w /= 1.5, 8000);
+                            break;
+                        case 2: // Fast balls
+                            balls.forEach(b => { b.vx *= 1.2; b.vy *= 1.2; });
+                            break;
+                    }
+                } else if (pu.y > canvas.height) {
+                    powerups.splice(i, 1);
+                }
+            }
+
+            // Level complete
+            const aliveBricks = bricks.filter(b => b.alive).length;
+            if (aliveBricks === 0) {
+                level++;
+                initLevel();
+                balls.forEach(b => { b.vx *= 1.05; b.vy *= 1.05; });
+            }
+
+            frame++;
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // BG gradient black
+            const grad = ctx.createLinearGradient(0, 0, 0, canvas.height);
+            grad.addColorStop(0, 'rgba(0,0,0,1)');
+            grad.addColorStop(1, 'rgba(26,26,26,1)');
+            ctx.fillStyle = grad;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Bricks (FUD Chains - dark red with pink glow)
+            bricks.forEach(brick => {
+                if (brick.alive) {
+                    ctx.fillStyle = '#8B0000';
+                    ctx.shadowColor = var(--accent);
+                    ctx.shadowBlur = 12;
+                    ctx.fillRect(brick.x, brick.y, brick.w, brick.h);
+                    ctx.shadowBlur = 0;
+                    ctx.strokeStyle = '#FF4444';
+                    ctx.lineWidth = 2;
+                    ctx.strokeRect(brick.x, brick.y, brick.w, brick.h);
+                }
+            });
+
+            // Balls (Gold $YEAH)
+            balls.forEach(ball => {
+                ctx.fillStyle = var(--gold);
+                ctx.shadowColor = var(--gold);
+                ctx.shadowBlur = 20;
+                ctx.beginPath();
+                ctx.arc(ball.x, ball.y, ball.r, 0, Math.PI*2);
+                ctx.fill();
+                ctx.shadowBlur = 0;
+                // $Y text
+                ctx.fillStyle = 'black';
+                ctx.font = 'bold 14px Orbitron';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText('$Y', ball.x, ball.y);
+            });
+
+            // Paddle (Pink Accent Shield)
+            ctx.fillStyle = var(--accent);
+            ctx.shadowColor = var(--accent);
+            ctx.shadowBlur = 15;
+            ctx.fillRect(paddle.x, canvas.height - paddle.h - 10, paddle.w, paddle.h);
+            ctx.shadowBlur = 0;
+            // Glow edge
+            ctx.strokeStyle = var(--accent-light);
+            ctx.lineWidth = 3;
+            ctx.strokeRect(paddle.x, canvas.height - paddle.h - 10, paddle.w, paddle.h);
+
+            // Top UI
+            ctx.fillStyle = 'rgba(0,0,0,0.6)';
+            ctx.fillRect(0, 0, canvas.width, 50);
+            ctx.fillStyle = var(--gold);
+            ctx.font = 'bold 32px Orbitron';
+            ctx.textAlign = 'center';
+            ctx.fillText(score.toLocaleString(), canvas.width/2, 35);
+
+            // Overlays
+            const overlayText = {
+                start: ['BREAKOUT $YEAH!', 'Mouse/Teclas/Touch', '¡Shatter FUD Chains!'],
+                win: ['LEVEL CLEAR!', `Shatters: ${score}`],
+                gameover: ['FUD WINS!', `Final: ${score}`, `High: ${highscore}`, 'Click to Retry']
+            };
+            if (gameState !== 'play') {
+                ctx.fillStyle = 'rgba(0,0,0,0.85)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.textAlign = 'center';
+                ctx.shadowColor = gameState === 'gameover' ? '#ff4444' : var(--gold);
+                ctx.shadowBlur = 20;
+                const texts = overlayText[gameState];
+                ctx.font = 'bold 48px Orbitron';
+                ctx.fillStyle = gameState === 'gameover' ? '#FF4444' : var(--accent);
+                ctx.fillText(texts[0], canvas.width/2, canvas.height/2 - 40);
+                ctx.shadowBlur = 0;
+                ctx.font = 'bold 28px Orbitron';
+                ctx.fillStyle = 'white';
+                for (let i = 1; i < texts.length; i++) {
+                    ctx.fillText(texts[i], canvas.width/2, canvas.height/2 + (i-1)*40);
+                }
+            }
+            ctx.textAlign = 'left';
+        }
+
+        function gameLoop() {
+            update();
+            draw();
+            requestAnimationFrame(gameLoop);
+        }
+
+        function startPlay() {
+            if (['start', 'gameover'].includes(gameState)) {
+                if (gameState === 'gameover') initGame();
+                else gameState = 'play';
+            }
+        }
+
+        function gameOver() {
+            gameState = 'gameover';
+            if (score > highscore) {
+                highscore = score;
+                localStorage.setItem('yeahBreakoutHS', highscore);
+                confetti();
+            }
+            tweetBtn.style.display = 'inline-block';
+            updateUI();
+        }
+
+        function updateUI() {
+            ui.textContent = `Shatters: ${score.toLocaleString()} | Level: ${level} | Lives: ${lives} | High: ${highscore.toLocaleString()}`;
+        }
+
+        function confetti() {
+            for (let i = 0; i < 120; i++) {
+                const conf = document.createElement('div');
+                const hue = Math.random() * 360;
+                conf.style.cssText = `
+                    position: fixed; left: ${Math.random()*100}vw; top: 100vh;
+                    width: 10px; height: 10px; background: hsl(${hue},100%,60%);
+                    pointer-events: none; animation: confetti-fall 3s linear forwards; z-index:9999;
+                    border-radius: 50%; box-shadow: 0 0 10px hsl(${hue},100%,50%);
+                `;
+                document.body.appendChild(conf);
+                setTimeout(() => conf.remove(), 3000);
+            }
+        }
+
+        function tweetScore() {
+            const text = encodeURIComponent(`Shattered ${highscore.toLocaleString()} FUD chains in Breakout $YEAH! Pure conviction 💎🙌 @Yeah_mindset #YEAH #BreakTheChains https://yeahmindset.vercel.app/Game.html`);
+            window.open(`https://x.com/intent/tweet?text=${text}`, '_blank');
+        }
+
+        // Events
+        canvas.addEventListener('click', startPlay);
+        canvas.addEventListener('mousemove', e => {
+            const rect = canvas.getBoundingClientRect();
+            mouseX = (e.clientX - rect.left) * (canvas.width / rect.width);
         });
+        canvas.addEventListener('touchmove', e => {
+            e.preventDefault();
+            const rect = canvas.getBoundingClientRect();
+            const touch = e.touches[0];
+            mouseX = (touch.clientX - rect.left) * (canvas.width / rect.width);
+        }, { passive: false });
+        document.addEventListener('keydown', e => {
+            if (e.code === 'Space') {
+                e.preventDefault();
+                startPlay();
+            } else if (gameState === 'play') {
+                if (e.code === 'KeyA' || e.code === 'ArrowLeft') paddle.x = Math.max(0, paddle.x - paddle.speed);
+                if (e.code === 'KeyD' || e.code === 'ArrowRight') paddle.x = Math.min(canvas.width - paddle.w, paddle.x + paddle.speed);
+            }
+        });
+        tweetBtn.addEventListener('click', tweetScore);
 
-        const particles = [];
-        for (let i = 0; i < 100; i++) {
-          particles.push({
-            x: Math.random() * canvas.width,
-            y: Math.random() * canvas.height,
-            vx: (Math.random() - 0.5) * 0.5,
-            vy: (Math.random() - 0.5) * 0.5,
-            radius: Math.random() * 2 + 1,
-            alpha: Math.random() * 0.5 + 0.2
-          });
-        }
-
-        function animate() {
-          ctx.clearRect(0, 0, canvas.width, canvas.height);
-          particles.forEach(p => {
-            ctx.save();
-            ctx.globalAlpha = p.alpha;
-            ctx.fillStyle = '#ff1493';
-            ctx.shadowColor = '#ff1493';
-            ctx.shadowBlur = 10;
-            ctx.beginPath();
-            ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.restore();
-
-            p.x += p.vx;
-            p.y += p.vy;
-            if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
-            if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
-          });
-          requestAnimationFrame(animate);
-        }
-        animate();
-      }
-
-      autoSave() {
-        setInterval(() => this.saveGame(), 30000);
-      }
-
-      saveGame() {
-        const data = {
-          conviction: this.conviction,
-          clickPower: this.clickPower,
-          autoPower: this.autoPower,
-          multiplier: this.multiplier,
-          prestige: this.prestige,
-          totalClicks: this.totalClicks,
-          totalConviction: this.totalConviction,
-          owned: this.owned,
-          achievements: this.achievements,
-          offlineStart: Date.now()
-        };
-        localStorage.setItem('yeahConvictionClickerPro', JSON.stringify(data));
-      }
-
-      loadGame() {
-        const saved = localStorage.getItem('yeahConvictionClickerPro');
-        if (saved) {
-          const data = JSON.parse(saved);
-          this.conviction = data.conviction || 0;
-          this.clickPower = data.clickPower || 1;
-          this.autoPower = data.autoPower || 0;
-          this.multiplier = data.multiplier || 1;
-          this.prestige = data.prestige || 0;
-          this.totalClicks = data.totalClicks || 0;
-          this.totalConviction = data.totalConviction || 0;
-          this.owned = data.owned || {};
-          this.achievements = data.achievements || {};
-          // Offline progress (simple: auto for time away)
-          const offlineTime = (Date.now() - (data.offlineStart || Date.now())) / 1000;
-          this.conviction += this.autoPower * this.multiplier * Math.min(offlineTime, 3600); // max 1h
-        }
-        this.multiplier += this.prestige * 0.01;
-      }
-    }
-
-    // Add shake animation
-    const style = document.createElement('style');
-    style.textContent = `
-      @keyframes shake {
-        0%, 100% { transform: translateX(0); }
-        25% { transform: translateX(-5px); }
-        75% { transform: translateX(5px); }
-      }
-    `;
-    document.head.appendChild(style);
-
-    // Init game
-    new YeahClicker();
-  </script>
+        // Init
+        initGame();
+        updateUI();
+        gameLoop();
+    </script>
 </body>
 </html>
